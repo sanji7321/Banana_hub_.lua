@@ -38,22 +38,22 @@ _G.AutoFullySuperhuman = true
         until game.Players.LocalPlayer.Team ~= nil and game:IsLoaded()
     end
 	game.StarterGui:SetCore("SendNotification", {
-		Title = "Koben x Hub Notification", 
+		Title = "Salles x Hub Notification", 
 		Text = "Loading Script...",
 		Icon = "http://www.roblox.com/asset/?id=14334760790",
 		Duration = 1
 	})
 	wait(0.3)
 	game.StarterGui:SetCore("SendNotification", {
-		Title = "Koben x Hub Notification", 
+		Title = "Salles x Hub Notification", 
 		Text = "Loading Whitelest...",
 		Icon = "http://www.roblox.com/asset/?id=14334760790",
 		Duration = 2
 	})
 wait(0.2)
 	game.StarterGui:SetCore("SendNotification", {
-		Title = "Koben x Hub Notification", 
-		Text = "Wellcome to Koben x Hub Premium Script",
+		Title = "Salles x Hub Notification", 
+		Text = "Wellcome to Salles x Hub Free Script",
 		Icon = "http://www.roblox.com/asset/?id=14334760790",
 		Duration = 2
 	})
@@ -63,7 +63,7 @@ if game.CoreGui:FindFirstChild("PepsiUi") then
 end
 
 local library = {
-	WorkspaceName = "KOBEN X HUB KAITAN SERISE X",
+	WorkspaceName = "SALLES X HUB KAITAN SERISE X",
 	flags = {},
 	signals = {},
 	objects = {},
