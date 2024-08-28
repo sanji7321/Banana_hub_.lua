@@ -1,8 +1,8 @@
-do local GUI = game.CoreGui:FindFirstChild("MyLibrary") if GUI then GUI:Destroy() end end
-do local Op = game.CoreGui:FindFirstChild("Salles hub") if Op then Op:Destroy() end end
-do local Ba = game.CoreGui:FindFirstChild("Balaraja") if Ba then Ba:Destroy() end end
-do local ui =  game:GetService("CoreGui"):FindFirstChild("RippleFPS")  if ui then ui:Destroy() end end
-do local uix =  game:GetService("CoreGui"):FindFirstChild("Rippletime")  if uix then uix:Destroy() end end
+do local GUI = game.CoreGui:FindFirstChild("https://raw.githubusercontent.com/Basicallyybeta/uii/main/Mingameui.lua") if GUI then GUI:Destroy() end
+do local Op = game.CoreGui:FindFirstChild("Salles hub") if Op then Op:Destroy() end
+do local Ba = game.CoreGui:FindFirstChild("Balaraja") if Ba then Ba:Destroy() end
+do local ui =  game:GetService("CoreGui"):FindFirstChild("RippleFPS")  if ui then ui:Destroy() end
+do local uix =  game:GetService("CoreGui"):FindFirstChild("Rippletime")  if uix then uix:Destroy() end
 
 if _G.Fast_Delay == nil then
 	_G.Fast_Delay = 0.15
