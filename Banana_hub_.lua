@@ -1,4 +1,4 @@
-local Update = loadstring(Game:HttpGet"https://roblox.relzscript.xyz/source/relzhub/library/pc.lua")()
+local Update = loadstring(Game:HttpGet"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua")()
 local Alert = loadstring(Game:HttpGet"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua")()
 local Library = Update:Window("Blox Fruits")
 local Main = Library:Tab("Main","rbxassetid://10723407389")
