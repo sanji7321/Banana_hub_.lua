@@ -1,2135 +1,1828 @@
---[[
- /$$$$$$$                      /$$                 /$$$$$$$$                               
-| $$__  $$                    |__/                |__  $$__/                               
-| $$  \ $$  /$$$$$$   /$$$$$$$ /$$  /$$$$$$          | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$ 
-| $$$$$$$/ /$$__  $$ /$$_____/| $$ /$$__  $$         | $$ /$$__  $$ |____  $$| $$_  $$_  $$
-| $$__  $$| $$  \ $$|  $$$$$$ | $$| $$$$$$$$         | $$| $$$$$$$$  /$$$$$$$| $$ \ $$ \ $$
-| $$  \ $$| $$  | $$ \____  $$| $$| $$_____/         | $$| $$_____/ /$$__  $$| $$ | $$ | $$
-| $$  | $$|  $$$$$$/ /$$$$$$$/| $$|  $$$$$$$         | $$|  $$$$$$$|  $$$$$$$| $$ | $$ | $$
-|__/  |__/ \______/ |_______/ |__/ \_______/         |__/ \_______/ \_______/|__/ |__/ |__/     
 
-[+] Rosie Team Cảm Ơn Bạn Đã Tin Tưởng Và Sử Dụng Dịch Vụ Của Chúng Tôi, Nếu Thấy Hữu Ít Hãy Chia Sẻ Cho Bạn Bè Của Bạn !!
-[+] Không Được Share Hay Crack Mã Nguồn Này Cho Ai! Nếu Không Bạn Sẽ Bị Ban IP Khỏi Website Vĩnh Viễn!
-[+] Chúng Tôi Không Nhận Hỗ Trợ Những Mã Nguồn Miễn Phí, Xin Đừng Bảo Vì Sao. Tạo Ticket Hỗ Trợ Của Website Tại: https://rosieteam.net/dash/ticket
-[+]  Nếu Bạn Edit Source Và Up Web Share Nhớ Obfuscate Script. Nếu Bạn Có Tiền Thì Sử Dụng: Lura.Ph, Luarmor.Net | Nếu Bạn Không Có Tiền Thì Dùng: luaobfuscate.com, MoonSec, 77Fuscate,... Nhé!
-]]
 
-local luxurylibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/SixZensED/Scripts/main/Luxury%20V2/Library.lua"))()
---
+do local ui =  game:GetService("CoreGui"):FindFirstChild("DzX Lib")  if ui then ui:Destroy() end end
 
-repeat task.wait() until game:IsLoaded()
 
-local close_button = function()
-	if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("luxury_close") then
-		game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("luxury_close"):Destroy()
+
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+local Atomlib = Instance.new("ScreenGui")
+
+Atomlib.Name = "DzX Lib"
+Atomlib.Parent = game:GetService("CoreGui")
+Atomlib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+
+
+local function MakeDraggable(topbarobject, object)
+	local Dragging = nil
+	local DragInput = nil
+	local DragStart = nil
+	local StartPosition = nil
+
+	local function Update(input)
+		local Delta = input.Position - DragStart
+		local pos =
+			UDim2.new(
+			StartPosition.X.Scale,
+			StartPosition.X.Offset + Delta.X,
+			StartPosition.Y.Scale,
+			StartPosition.Y.Offset + Delta.Y
+		)
+		local Tween = TweenService:Create(object, TweenInfo.new(0.2), {Position = pos})
+		Tween:Play()
 	end
 
-	local luxury_close = Instance.new("ScreenGui")
-	local close_button = Instance.new("ImageButton")
-	local UICorner = Instance.new("UICorner")
+	topbarobject.InputBegan:Connect(
+		function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				Dragging = true
+				DragStart = input.Position
+				StartPosition = object.Position
 
-	luxury_close.Name = "luxury_close"
-	luxury_close.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	luxury_close.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	luxury_close.ResetOnSpawn = false
-
-	close_button.Name = "close_button"
-	close_button.Parent = luxury_close
-	close_button.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-	close_button.BackgroundTransparency = 0.100
-	close_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	close_button.BorderSizePixel = 0
-	close_button.Position = UDim2.new(0.0559845567, 0, 0.198529407, 0)
-	close_button.Size = UDim2.new(0, 45, 0, 45)
-	close_button.AutoButtonColor = false
-	close_button.Image = "rbxassetid://16124510195"
-
-	UICorner.Parent = close_button
-
-	local close = true
-	close_button.MouseButton1Down:Connect(function()
-		if not close then
-			for i,v in pairs(game:GetService("CoreGui"):GetChildren()) do
-				if string.find(v.Name,"xova") then
-					v.Enabled = true
-				end
-			end
-		else
-			for i,v in pairs(game:GetService("CoreGui"):GetChildren()) do
-				if string.find(v.Name,"xova") then
-					v.Enabled = false
-				end
-			end
-		end
-		close = not close
-	end)
-end
-
-do
-	close_button()
-end
-
-local getnoclip = function(boolen,options)
-	if boolen then
-		if setfflag then
-			setfflag("HumanoidParallelRemoveNoPhysics", "False")
-			setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
-		end
-		if options.Method == "Gyro" then
-			if syn then
-				game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):ChangeState(11)
-			else
-				if game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Gyro") then
-					game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Gyro"):Destroy()
-				end
-				local Gyro = Instance.new("BodyVelocity",game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"))
-				Gyro.Velocity = Vector3.new(0,0,0)
-				Gyro.MaxForce = Vector3.new(1000000, 1000000, 1000000)
-				Gyro.Name = "Gyro"
-				for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-					if v:IsA("BasePart") then
-						v.CanCollide = false    
-					end
-				end
-			end
-		end
-	else
-		if syn then
-			game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):ChangeState(11)
-		else
-			if game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Gyro") then
-				game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Gyro"):Destroy()
-			end
-		end
-	end
-end
-
-local tp = function(boolen,options)
-	if boolen then
-		if options.Method == "tween" then
-			local callback = options.callback or function() end
-			local tween_s = game:GetService("TweenService")
-			local info = TweenInfo.new((game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart.Position - options.GetCFrame.Position).Magnitude/1000, Enum.EasingStyle.Linear)
-			tween = tween_s:Create(game.Players.LocalPlayer.Character["HumanoidRootPart"], info, {CFrame = options.GetCFrame})
-			tween:Play()
-			tween.Completed:Connect(function(v)
-				if v == Enum.PlaybackState.Completed then
-					callback(v)
-					tween:Cancel()
-				end
-			end)
-
-			local totargetFunction = {}
-
-			function totargetFunction:Stop()
-				tween:Cancel()
-			end
-
-			return totargetFunction
-		elseif options.Method == "tp" then
-			game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = options.GetCFrame
-		end
-	end
-end
-
-for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do 
-	v:Disable()
-end
-
-getfenv().temp = true
-local screen = luxurylibrary.create(true)
-local main = screen.createmain()
-
-luxurylibrary.notification({Title = "Loaded Successfully.",Desc = "Thank you for purchase.",Type = 1})
-local t = tick()
-luxurylibrary.notification({Title = "Script Loaded In : "..tick() - t.." s",Desc = "if script bug please send to me problem SixZens",Type = 1})
-
-local item = main.item({Title = "Automatic",Desc = "have automatic farm level max and more function"})
-local item2 = main.item({Title = "Teleports",Desc = "teleport island or other place"})
-local section = item.section({Type = 1})
-local section2 = item.section({Type = 3})
-local section3 = item.section({Type = 1})
-local section4 = item.section({Type = 3})
-local section5 = item.section({Type = 2})
-local section6 = item.section({Type = 1})
-local section7 = item.section({Type = 2})
-local section8 = item.section({Type = 1})
-local section9 = item2.section({Type = 1})
-local section10 = item.section({Type = 2})
-local section11 = item.section({Type = 2})
-
-local checklevel = function()
-	local questlist = {}
-	local quest_required = require(game:GetService("ReplicatedStorage").Chest.Modules.QuestManager)
-	local name_mob,boss = nil,false
-	for index , value in pairs(game:GetService("Workspace").AllNPC:GetChildren()) do
-		if string.find(value.Name,"QuestLvl") then
-			local sublevel = string.match(value.Name,"%d+")
-			if game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value >= 1 and game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value <= 9 then
-				table.insert(questlist,0)
-			elseif tonumber(sublevel) <= tonumber(game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value) then
-				table.insert(questlist,sublevel)
-			end
-		end
-	end
-	questlevel = math.max(unpack(questlist))
-	if game:GetService("Players").LocalPlayer.CurrentQuest.Value ~= "" then
-		name_mob = quest_required[game:GetService("Players").LocalPlayer.CurrentQuest.Value].Mob
-		if quest_required[game:GetService("Players").LocalPlayer.CurrentQuest.Value].Ammount == 1 then
-			boss = true
-		end
-	else
-		name_mob = ""
-	end
-	return{["QuestLvl"] = "QuestLvl"..questlevel,["Mob"] = name_mob,["CheckBoss"] = boss}
-end
-
-local getquest = function(args,args2 : boolean)
-	tp(true,{Method = "tp",GetCFrame = game:GetService("Workspace").AllNPC[args].CFrame * CFrame.new(0,0,-2)})
-	getnoclip(true,{Method = "Gyro"})
-	if args2 then
-		task.wait()
-		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.CheckQuest:InvokeServer(game:GetService("Workspace").AllNPC:FindFirstChild(args))
-		task.spawn(function()
-			xpcall(function()
-				for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:GetDescendants()) do
-					if v:FindFirstChild('Dialogue') then
-						v.Dialogue.Accept.Size = UDim2.new(1000,1000,1000,1000)
-						v.Dialogue.Accept.Position = UDim2.new(0,-550,0,-550)
-						v.Dialogue.Accept.BackgroundTransparency = 1
-						v.Dialogue.Accept.ImageTransparency = 1
-
-						game:GetService('VirtualUser'):CaptureController()
-						game:GetService('VirtualUser'):ClickButton1(Vector2.new(0,0))
-					end
-				end
-			end,function() end)
-		end)
-	end
-end
-
-local close_quest = function()
-	task.spawn(function()
-		xpcall(function()
-			game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.LocalScript.CancelQuestRemote:FireServer()
-		end,function() end)
-	end)
-end
-
-local attack = function(args)
-	if select_weapon == nil or args == nil then
-		luxurylibrary.notification({Title = "Notification",Desc = "Please Select Weapon First",Type = 2})
-	else
-		task.spawn(function()
-			game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(args))
-			for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-				if v:IsA("Tool") then
-					if v.ToolTip == "Combat" then
-						game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer("FS_"..v.Name.."_M1")
-					elseif v.ToolTip == "Sword" then
-						game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer("SW_"..v.Name.."_M1")
-					end
-				end
-			end
-			for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
-				if v:IsA("Tool") then
-					if v.ToolTip == "Combat" then
-						game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer("FS_"..v.Name.."_M1")
-					elseif v.ToolTip == "Sword" then
-						game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer("SW_"..v.Name.."_M1")
-					end
-				end
-			end
-		end)
-	end
-end
-
-local skill = function()
-	task.spawn(function()
-		if auto_farm_level or auto_second_sea or auto_farm_select or auto_saber or auto_event_chest or auto_material_select or auto_authentic_mace or auto_jitter
-			or auto_pole or auto_bisento or auto_muramasa or auto_mom_blade or auto_anubis_axe or auto_shark_blade or auto_tachi_blade or auto_adventure_knife
-		then
-			for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
-				if v:IsA("Tool") then
-					if v.ToolTip == "Combat" then
-						List = "FSFrame"
-					elseif v.ToolTip == "Sword" then
-						List = "SWFrame"
-					elseif v.ToolTip == "Fruit Power" then
-						List = "DFFrame"
-					end
-					for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
-						if v.Name == "SkillCooldown" then
-							for i,v in pairs(v:GetChildren()) do
-								if v.Name == List then
-									for i,v in pairs(v:GetChildren()) do
-										if v:IsA("Frame") and v.Name ~= "Power" then
-											if not v:FindFirstChild("Locked").Visible then
-												if auto_skill then
-													game:GetService("VirtualInputManager"):SendKeyEvent(true,v.Name,false,game:GetService("Players").LocalPlayer.Character.HumanoidRootPart)
-													wait()
-													game:GetService("VirtualInputManager"):SendKeyEvent(false,v.Name,false,game:GetService("Players").LocalPlayer.Character.HumanoidRootPart)
-												end
-											end
-										end
-									end
-								end
-							end
+				input.Changed:Connect(
+					function()
+						if input.UserInputState == Enum.UserInputState.End then
+							Dragging = false
 						end
 					end
-				end
+				)
 			end
 		end
-	end)
-end
+	)
 
-
-
-local get_haki = function()
-	task.spawn(function()
-		if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Services"):FindFirstChild("Haki").Value == 0 then
-			game:GetService("ReplicatedStorage").Chest.Remotes.Events.Armament:FireServer()
-		end
-		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.KenEvent:InvokeServer()
-	end)
-end
-
-local getconnect = function(v2)
-	for i ,v in pairs(getconnections(v2)) do 
-		pcall(function()
-			v.Function()
-		end)
-	end
-end
-
-local check_sea = function()
-	if game:GetService("Players").LocalPlayer.PlayerStats.IsSecondSea.Value == "No" then
-		return 1
-	else
-		return 2
-	end
-end
-
-local check_sea_progress = function()
-	if game:GetService("Players").LocalPlayer.PlayerStats.SecondSeaProgression.Value == "No" then
-		return 1
-	else
-		return 2
-	end
-end
-
-local check_thirdsea = function()
-	if string.find(game:GetService("Players").Starlizard09.PlayerStats.Misc.Value,"ThirdSea") then
-		return true
-	else
-		return false
-	end
-end
-
-local check_fighting = function(args)
-	if string.find(game:GetService("Players").LocalPlayer.PlayerStats.Bought.Value,args) then
-		return true
-	else
-		return false
-	end
-end
-
-local check_material = function(args)
-	if string.find(game:GetService("Players").LocalPlayer.PlayerStats.Material.Value,args) then
-		return true
-	else
-		return false
-	end
-end
-
-local check_count_material = function(args)
-	local itemQuantities = game.HttpService:JSONDecode(game:GetService("Players").LocalPlayer.PlayerStats.Material.Value)
-	for itemName, quantity in pairs(itemQuantities) do
-		if string.find(itemName,args) then
-			return quantity
-		end
-	end
-end
-
-local check_train_skill = function(args)
-	if args == "Buso" then
-		if game:GetService("Players").LocalPlayer.PlayerStats.BusoShopValue.Value ~= "None" then
-			return true
-		else
-			return false
-		end
-	elseif args == "Soru" then
-		if game:GetService("Players").LocalPlayer.PlayerStats.Soru.Value ~= "None" then
-			return true
-		else
-			return false
-		end  
-	elseif args == "Ken" then
-		if game:GetService("Players").LocalPlayer.PlayerStats.KenShopValue.Value ~= "None" then
-			return true
-		else
-			return false
-		end
- 	end
-end
-
-local method_farm = function(args,args2)
-	if args == "Above" then
-		tp(true,{Method = "tween",GetCFrame = args2:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,distance_farming,0) * CFrame.Angles(math.rad(-90),0,0),callback = function(v)
-			attack(select_weapon)
-			get_haki()
-			skill()
-			--
-			args2:FindFirstChild("Humanoid").WalkSpeed = 0
-		end,})
-	elseif args == "Behind" then
-		tp(true,{Method = "tween",GetCFrame = args2:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,distance_farming),callback = function(v)
-			attack(select_weapon)
-			get_haki()
-			skill()
-			--
-			args2:FindFirstChild("Humanoid").WalkSpeed = 0
-		end,})
-	elseif args == "Below" then
-		tp(true,{Method = "tween",GetCFrame = args2:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,-distance_farming,0) * CFrame.Angles(math.rad(90),0,0),callback = function(v)
-			attack(select_weapon)
-			get_haki()
-			skill()
-			--
-			args2:FindFirstChild("Humanoid").WalkSpeed = 0
-		end,})
-	end
-end
-
-local check_sword = function(args)
-	if game:GetService("Players").LocalPlayer.Inventory:FindFirstChild(args) then
-		return true
-	else
-		return false
-	end
-end
-
-section.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Farm</font>'})
-
-section.input("Toggle",{Title = "Auto Farm Level",default = false,callback = function(value)
-	auto_farm_level = value
-	if not auto_farm_level then
-		getnoclip(false,{Method = "Gyro"})
-	end
-	task.spawn(function()
-		while task.wait() do
-			if auto_farm_level and auto_second_sea then
-				xpcall(function()
-					if auto_second_sea and game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value >= 2250 then
-						if check_sea() == 1 and check_sea_progress() == 1 then
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value ~= "Second Sea Map" then
-								getquest(workspace.AllNPC.Traveler.Name,true)
-							elseif game:GetService("Players").LocalPlayer.CurrentQuest.Value == "Second Sea Map" then
-								if not check_material("Map") then
-									for i,v in pairs(workspace.Monster.Boss:GetChildren()) do
-										if v.Name == "Seasoned Fishman [Lv. 2200]" and v:FindFirstChild("Humanoid").Health > 1 and v:FindFirstChild("HumanoidRootPart") then
-											repeat task.wait()
-												getnoclip(true,{Method = "Gyro"})
-												if (v:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-													tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-												else
-													method_farm(select_method_farm,v)
-												end
-											until not auto_second_sea or v:FindFirstChild("Humanoid").Health <= 0 or not v:FindFirstChild("HumanoidRootPart")
-											tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-										else
-											tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-										end
-									end
-								else
-									getquest(workspace.AllNPC.Traveler.Name,true)
-								end
-							end
-						elseif check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					else
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) < tonumber(string.match(checklevel()["QuestLvl"], "%d+")) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(checklevel()["QuestLvl"],true)
-						else
-							if checklevel()['Mob'] ~= "" then
-								xpcall(function()
-									if checklevel()['CheckBoss'] == true then
-										FolderMob = game:GetService("Workspace").Monster.Boss
-									else
-										FolderMob = game:GetService("Workspace").Monster.Mon
-									end
-									for index , value in pairs(FolderMob:GetChildren()) do
-										if value.Name == checklevel()['Mob'] and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-											repeat task.wait()
-												getnoclip(true,{Method = "Gyro"})
-												if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-													getquest(checklevel()["QuestLvl"],false)
-												else
-													method_farm(select_method_farm,value)
-												end
-											until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-											getnoclip(false,{Method = "Gyro"})
-										else
-											getquest(checklevel()["QuestLvl"],false)
-										end
-									end
-								end,function() end)
-							end
-						end
-					end
-				end,function() end)
-			elseif auto_farm_level and not auto_second_sea then
-				xpcall(function()
-					if checklevel()["QuestLvl"] == "QuestLvl3350" then
-						local mob_level = tonumber(string.match("Azlan [Lv. 3300]", "%[Lv%. (%d+)%]"))
-						local quest_level = "QuestLvl"..mob_level
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(quest_level,true)
-						else
-							for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-								if value.Name == "Azlan [Lv. 3300]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						end
-					elseif checklevel()["QuestLvl"] == "QuestLvl3375" then
-						local mob_level = tonumber(string.match("The Volcano [Lv. 3325]", "%[Lv%. (%d+)%]"))
-						local quest_level = "QuestLvl"..mob_level
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(quest_level,true)
-						else
-							for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-								if value.Name == "The Volcano [Lv. 3325]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = CFrame.new(83.33702850341797, 131.7090301513672, -3585.72216796875)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						end
-					elseif checklevel()["QuestLvl"] == "QuestLvl3475" then
-						local mob_level = tonumber(string.match("Sally [Lv. 3450]", "%[Lv%. (%d+)%]"))
-						local quest_level = "QuestLvl"..mob_level
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(quest_level,true)
-						else
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Sally [Lv. 3450]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = CFrame.new(-9598.5361328125, 59.37502670288086, -5271.25244140625)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						end
-					elseif checklevel()["QuestLvl"] == "QuestLvl3575" then
-						local mob_level = tonumber(string.match("Hefty [Lv. 3550]", "%[Lv%. (%d+)%]"))
-						local quest_level = "QuestLvl"..mob_level
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(quest_level,true)
-						else
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Hefty [Lv. 3550]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = CFrame.new(-9598.5361328125, 59.37502670288086, -5271.25244140625)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						end
-					elseif checklevel()["QuestLvl"] == "QuestLvl3650" then
-						local mob_level = tonumber(string.match("Hefty [Lv. 3550]", "%[Lv%. (%d+)%]"))
-						local quest_level = "QuestLvl"..mob_level
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-									close_quest()
-								end
-							end
-						end)
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(quest_level,true)
-						else
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Hefty [Lv. 3550]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = CFrame.new(-9598.5361328125, 59.37502670288086, -5271.25244140625)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						end
-					else
-						task.spawn(function()
-							local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-							if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-								return
-							else
-								if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) < tonumber(string.match(checklevel()["QuestLvl"], "%d+")) then
-									close_quest()
-								end
-							end
-						end)
-
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							getquest(checklevel()["QuestLvl"],true)
-						else
-							if checklevel()['Mob'] ~= "" then
-								xpcall(function()
-									if checklevel()['CheckBoss'] == true then
-										FolderMob = game:GetService("Workspace").Monster.Boss
-									else
-										FolderMob = game:GetService("Workspace").Monster.Mon
-									end
-									for index , value in pairs(FolderMob:GetChildren()) do
-										if value.Name == checklevel()['Mob'] and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-											repeat task.wait()
-												getnoclip(true,{Method = "Gyro"})
-												if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-													if checklevel()['Mob'] == "Dough Master [Lv. 3275]" then
-														tp(true,{Method = "tp" ,GetCFrame = CFrame.new(30282.763671875, 65.45161437988281, 93195.375)})
-													elseif checklevel()['Mob'] == "Supreme Swordman [Lv. 3425]" then
-														tp(true,{Method = "tp",GetCFrame = CFrame.new(-9682.1376953125, 59.34377670288086, -4557.251953125)})
-													elseif checklevel()['Mob'] == "Vice Admiral [Lv. 3500]" then
-														tp(true,{Method = "tp",GetCFrame = CFrame.new(-10130.1064453125, 37.73771286010742, 322.48822021484375)})
-													elseif checklevel()['Mob'] == "Prince Aria [Lv. 3700]" then
-														tp(true,{Method = "tp",GetCFrame = CFrame.new(6859.6669921875, 150.06887817382812, -3715.262451171875)})
-													elseif checklevel()['Mob'] == "Devastate [Lv. 3725]" then
-														tp(true,{Method = "tp",GetCFrame = CFrame.new(7425.17529296875, 81.5720443725586, -2543.26416015625)})
-													else
-														getquest(checklevel()["QuestLvl"],false)
-													end
-												else
-													method_farm(select_method_farm,value)
-												end
-											until not auto_farm_level or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-											getnoclip(false,{Method = "Gyro"})
-										else
-											if checklevel()['Mob'] == "Dough Master [Lv. 3275]" then
-												tp(true,{Method = "tp" ,GetCFrame = CFrame.new(30282.763671875, 65.45161437988281, 93195.375)})
-											elseif checklevel()['Mob'] == "Supreme Swordman [Lv. 3425]" then
-												tp(true,{Method = "tp",GetCFrame = CFrame.new(-9682.1376953125, 59.34377670288086, -4557.251953125)})
-											elseif checklevel()['Mob'] == "Vice Admiral [Lv. 3500]" then
-												tp(true,{Method = "tp",GetCFrame = CFrame.new(-10130.1064453125, 37.73771286010742, 322.48822021484375)})
-											elseif checklevel()['Mob'] == "Prince Aria [Lv. 3700]" then
-												tp(true,{Method = "tp",GetCFrame = CFrame.new(6859.6669921875, 150.06887817382812, -3715.262451171875)})
-											elseif checklevel()['Mob'] == "Devastate [Lv. 3725]" then
-												tp(true,{Method = "tp",GetCFrame = CFrame.new(7425.17529296875, 81.5720443725586, -2543.26416015625)})
-											else
-												getquest(checklevel()["QuestLvl"],false)
-											end
-										end
-									end
-								end,function() end)
-							end
-						end
-					end
-				end,function() end)
+	topbarobject.InputChanged:Connect(
+		function(input)
+			if
+				input.UserInputType == Enum.UserInputType.MouseMovement or
+					input.UserInputType == Enum.UserInputType.Touch
+			then
+				DragInput = input
 			end
 		end
-	end)
-end,})
-local function a(b)local c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'local d={}for e=1,#c do d[c:sub(e,e)]=e-1 end;local f=string.sub(b,-2)=='=='and 2 or string.sub(b,-1)=='='and 1 or 0;local g={}for e=1,#b-f,4 do local h,i,j,k=string.byte(b,e,e+3)local l=d[string.char(h)]*262144+d[string.char(i)]*4096+d[string.char(j)]*64+d[string.char(k)]table.insert(g,string.char(l/65536))table.insert(g,string.char(l/256%256))table.insert(g,string.char(l%256))end;for e=1,f do table.remove(g)end;return table.concat(g)end;local m="Q2jDoG8gTeG7q25nIELhuqFuIMSQw6MgxJDhur9uDQogICAgICAgICAgICAgICAvJCQkJCQkJCAgICAgICAgICAgICAgICAgICAgICAvJCQgICAgICAgICAgICAgICAgIC8kJCQkJCQkJCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgfCAkJF9fICAkJCAgICAgICAgICAgICAgICAgICAgfF9fLyAgICAgICAgICAgICAgICB8X18gICQkX18vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA0KICAgICAgICAgICAgICB8ICQkICBcICQkICAvJCQkJCQkICAgLyQkJCQkJCQgLyQkICAvJCQkJCQkICAgICAgICAgIHwgJCQgIC8kJCQkJCQgICAvJCQkJCQkICAvJCQkJCQkLyQkJCQgDQogICAgICAgICAgICAgIHwgJCQkJCQkJC8gLyQkX18gICQkIC8kJF9fX19fL3wgJCQgLyQkX18gICQkICAgICAgICAgfCAkJCAvJCRfXyAgJCQgfF9fX18gICQkfCAkJF8gICQkXyAgJCQNCiAgICAgICAgICAgICAgfCAkJF9fICAkJHwgJCQgIFwgJCR8ICAkJCQkJCQgfCAkJHwgJCQkJCQkJCQgICAgICAgICB8ICQkfCAkJCQkJCQkJCAgLyQkJCQkJCR8ICQkIFwgJCQgXCAkJA0KICAgICAgICAgICAgICB8ICQkICBcICQkfCAkJCAgfCAkJCBcX19fXyAgJCR8ICQkfCAkJF9fX19fLyAgICAgICAgIHwgJCR8ICQkX19fX18vIC8kJF9fICAkJHwgJCQgfCAkJCB8ICQkDQogICAgICAgICAgICAgIHwgJCQgIHwgJCR8ICAkJCQkJCQvIC8kJCQkJCQkL3wgJCR8ICAkJCQkJCQkICAgICAgICAgfCAkJHwgICQkJCQkJCR8ICAkJCQkJCQkfCAkJCB8ICQkIHwgJCQNCiAgICAgICAgICAgICAgfF9fLyAgfF9fLyBcX19fX19fLyB8X19fX19fXy8gfF9fLyBcX19fX19fXy8gICAgICAgICB8X18vIFxfX19fX19fLyBcX19fX19fXy98X18vIHxfXy8gfF9fLyAgICAgICAgICAgICAgICANCiAgICAgIFsrXSBSb3NpZSBUZWFtIEPhuqNtIMagbiBC4bqhbiDEkMOjIFRpbiBUxrDhu59uZyBWw6AgU+G7rSBE4bulbmcgROG7i2NoIFbhu6UgQ+G7p2EgQ2jDum5nIFTDtGksIE7hur91IFRo4bqleSBI4buvdSDDjXQgSMOjeSBDaGlhIFPhursgQ2hvIELhuqFuIELDqCBD4bunYSBC4bqhbiAhIQ0KICAgICAgWytdIEtow7RuZyDEkMaw4bujYyBTaGFyZSBIYXkgQ3JhY2sgTcOjIE5ndeG7k24gTsOgeSBDaG8gQWkhIE7hur91IEtow7RuZyBC4bqhbiBT4bq9IELhu4sgQmFuIElQIEto4buPaSBXZWJzaXRlIFbEqW5oIFZp4buFbiENCiAgICAgIFsrXSBDaMO6bmcgVMO0aSBLaMO0bmcgTmjhuq1uIEjhu5cgVHLhu6MgTmjhu69uZyBNw6MgTmd14buTbiBNaeG7hW4gUGjDrSwgWGluIMSQ4burbmcgQuG6o28gVsOsIFNhby4gVOG6oW8gVGlja2V0IEjhu5cgVHLhu6MgQ+G7p2EgV2Vic2l0ZSBU4bqhaTogaHR0cHM6Ly9yb3NpZXRlYW0ubmV0L2Rhc2gvdGlja2V0DQogICAgICBbK10gIE7hur91IELhuqFuIEVkaXQgU291cmNlIFbDoCBVcCBXZWIgU2hhcmUgTmjhu5sgT2JmdXNjYXRlIFNjcmlwdC4gTuG6v3UgQuG6oW4gQ8OzIFRp4buBbiBUaMOsIFPhu60gROG7pW5nOiBMdXJhLlBoLCBMdWFybW9yLk5ldCB8IE7hur91IELhuqFuIEtow7RuZyBDw7MgVGnhu4FuIFRow6wgRMO5bmc6IGx1YW9iZnVzY2F0ZS5jb20sIE1vb25TZWMsIDc3RnVzY2F0ZSwuLi4gTmjDqSENCl1d"local n=a(m)warn(n)
-task.spawn(function()
-	if check_sea() == 1 then -- First Sea
-		section.input("Toggle",{Title = "Auto Second Sea",default = false,callback = function(value)
-			auto_second_sea = value
-			task.spawn(function()
-				while task.wait() do
-					xpcall(function()
-						if auto_second_sea and not auto_farm_level then
-							if auto_second_sea and game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value >= 2250 then
-								if check_sea() == 1 and check_sea_progress() == 1 then
-									if game:GetService("Players").LocalPlayer.CurrentQuest.Value ~= "Second Sea Map" then
-										getquest(workspace.AllNPC.Traveler.Name,true)
-									elseif game:GetService("Players").LocalPlayer.CurrentQuest.Value == "Second Sea Map" then
-										if not check_material("Map") then
-											for i,v in pairs(workspace.Monster.Boss:GetChildren()) do
-												if v.Name == "Seasoned Fishman [Lv. 2200]" and v:FindFirstChild("Humanoid").Health > 1 and v:FindFirstChild("HumanoidRootPart") then
-													repeat task.wait()
-														getnoclip(true,{Method = "Gyro"})
-														if (v:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-															tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-														else
-															method_farm(select_method_farm,v)
-														end
-													until not auto_second_sea or v:FindFirstChild("Humanoid").Health <= 0 or not v:FindFirstChild("HumanoidRootPart")
-													tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-												else
-													tp(true,{Method = "tp",GetCFrame = CFrame.new(-1809.34412, 107.717552, 6537.37891, 0.963350534, 1.10248317e-08, -0.268245608, 3.99932132e-09, 1, 5.54625288e-08, 0.268245608, -5.45026602e-08, 0.963350534)})
-												end
-											end
-										else
-											getquest(workspace.AllNPC.Traveler.Name,true)
-										end
-									end
-								elseif check_sea_progress() == 2 then
-									getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-								end
-							end
-						end
-					end,function() end)
+	)
+
+	UserInputService.InputChanged:Connect(
+		function(input)
+			if input == DragInput and Dragging then
+				Update(input)
+			end
+		end
+	)
+end
+
+
+local ui = {}
+
+
+function ui:win()
+
+    local fs = false 
+    local currentservertoggled = ""
+    local Main = Instance.new("Frame")
+        
+    Main.Name = "Main"
+    Main.Parent = Atomlib
+    Main.BackgroundColor3 = Color3.fromRGB(19 , 19, 19)
+    Main.BorderSizePixel = 0
+    Main.Position = UDim2.new(0.5, 0, 0.5   , 0)
+    Main.Size = UDim2.new(0, 0, 0, 0)
+    Main.ClipsDescendants = true 
+    Main.AnchorPoint = Vector2.new(0.5, 0.5)
+
+
+    local Mainpagt = Instance.new("Frame")
+        
+    Mainpagt.Name = "Mainpagt"
+    Mainpagt.Parent = Main
+    Mainpagt.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    Mainpagt.BorderSizePixel = 0
+    Mainpagt.Position = UDim2.new(0, 0, 0  , 0)
+    Mainpagt.Size = UDim2.new(0, 1500, 0, 120)
+    Mainpagt.ClipsDescendants = true 
+    Mainpagt.AnchorPoint = Vector2.new(0.5, 0.5)
+
+local MainHub = Instance.new("Frame")
+        
+    MainHub.Name = "MainHub"
+    MainHub.Parent = Main
+    MainHub.BackgroundColor3 = Color3.fromRGB(19,19,19)
+    MainHub.BorderSizePixel = 0
+    MainHub.BackgroundTransparency = 0
+    MainHub.Position = UDim2.new(0.50, 0, 0.26 , 0)
+    MainHub.Size = UDim2.new(0, 545, 0, 160)
+    MainHub.ClipsDescendants = true 
+    MainHub.AnchorPoint = Vector2.new(0.5, 0.5)
+
+    local texth3 = Instance.new("TextLabel")
+                  
+    texth3.Parent = MainHub
+    texth3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    texth3.BackgroundTransparency = 1
+    texth3.AnchorPoint = Vector2.new(0.5, 0.5)
+    texth3.Position = UDim2.new(0.200, 0, 0.2, 0)
+    texth3.BorderSizePixel = 0
+    texth3.Size = UDim2.new(0, 130, 0, 20)
+    texth3.Font = Enum.Font.GothamBold
+    texth3.Text = "      Welcome To"
+    texth3.TextColor3 = Color3.fromRGB(255, 255, 255)
+    texth3.TextSize = 30.000
+
+local texth1 = Instance.new("TextLabel")
+                  
+    texth1.Parent = MainHub
+    texth1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    texth1.BackgroundTransparency = 1
+    texth1.AnchorPoint = Vector2.new(0.5, 0.5)
+    texth1.Position = UDim2.new(0.200, 0, 0.4, 0)
+    texth1.BorderSizePixel = 0
+    texth1.Size = UDim2.new(0, 130, 0, 20)
+    texth1.Font = Enum.Font.GothamBold
+    texth1.Text = "  แจกทุกอย่าง"
+    texth1.TextColor3 = Color3.fromRGB(255, 255, 255)
+    texth1.TextSize = 45.000
+
+local texth2 = Instance.new("TextLabel")
+                  
+    texth2.Parent = MainHub
+    texth2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    texth2.BackgroundTransparency = 1
+    texth2.AnchorPoint = Vector2.new(0.5, 0.5)
+    texth2.Position = UDim2.new(0.400, 0, 0.4, 0)
+    texth2.BorderSizePixel = 0
+    texth2.Size = UDim2.new(0, 130, 0, 20)
+    texth2.Font = Enum.Font.GothamBold
+    texth2.Text = "       Hub"
+    texth2.TextColor3 = Color3.fromRGB(102, 204, 102)
+    texth2.TextSize = 45.000
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+local namehu = Instance.new("TextLabel")
+                  
+    namehu.Parent = Main
+    namehu.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    namehu.BackgroundTransparency = 1
+    namehu.AnchorPoint = Vector2.new(0.5, 0.5)
+    namehu.Position = UDim2.new(0.235, 0, 0.06, 0)
+    namehu.BorderSizePixel = 0
+    namehu.Size = UDim2.new(0, 130, 0, 20)
+    namehu.Font = Enum.Font.GothamBold
+    namehu.Text = "แจกทุกอย่าง"
+    namehu.TextColor3 = Color3.fromRGB(255, 255, 255)
+    namehu.TextSize = 25.000
+    --by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    local Sethuh = Instance.new("Frame")
+        
+    Sethuh.Name = "Sethuh"
+    Sethuh.Parent = MainHub
+    Sethuh.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    Sethuh.BorderSizePixel = 0
+    Sethuh.BackgroundTransparency = 0
+    Sethuh.Position = UDim2.new(0.06, 0, 0.45 , 0)
+    Sethuh.Size = UDim2.new(0, 6, 0, 100)
+    Sethuh.ClipsDescendants = true 
+    Sethuh.AnchorPoint = Vector2.new(0.5, 0.5)
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    local Sethuh_Corner = Instance.new("UICorner")
+            --by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    Sethuh_Corner.CornerRadius = UDim.new(0, 15)
+    Sethuh_Corner.Name = ""
+    Sethuh_Corner.Parent = Sethuh
+    
+
+    local JoinButton = Instance.new("TextButton")
+
+    JoinButton.Parent = MainHub
+    JoinButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    JoinButton.BackgroundTransparency = 1
+    JoinButton.BorderSizePixel = 0
+    JoinButton.Position = UDim2.new(0.235, 0, 0.7, 0)
+    JoinButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    JoinButton.Size = UDim2.new(0, 140, 0.01, 25)
+    JoinButton.Font = Enum.Font.GothamBold
+    JoinButton.Text = "Join Discord"
+    JoinButton.TextColor3 = Color3.fromRGB(102, 204, 102)
+    JoinButton.TextSize = 17.000
+    JoinButton.MouseButton1Click:Connect(function()
+        local a=request or http_request or syn and syn.request;local b=game.HttpService;a({Url="http://127.0.0.1:6463/rpc?v=1",Method="POST",Headers={["Content-Type"]="application/json",["Origin"]="https://discord.com"},Body=b:JSONEncode({cmd="INVITE_BROWSER",args={code="NvGY2vEkV2"},nonce=b:GenerateGUID(false)})})local c=game:GetService("Players").LocalPlayer
+    end)
+    local Main_UiXConner  = Instance.new("UICorner")
+
+    Main_UiXConner.CornerRadius = UDim.new(0, 8)
+    Main_UiXConner.Name = "Main_UiXConner"
+    Main_UiXConner.Parent = JoinButton
+
+    local SearchStroke = Instance.new("UIStroke")
+
+    SearchStroke.Thickness = 1.4
+    SearchStroke.Name = ""
+    SearchStroke.Parent = JoinButton
+    SearchStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SearchStroke.LineJoinMode = Enum.LineJoinMode.Round
+    SearchStroke.Color = Color3.fromRGB(102, 204, 102)
+    SearchStroke.Transparency = 0
+
+    local Logohub = Instance.new("ImageLabel")
+    
+    
+    Logohub.Name = "Logohub"
+    Logohub.Parent = MainHub
+    Logohub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Logohub.Position = UDim2.new(0.850, 0, 0.500, 0)
+    Logohub.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    Logohub.BorderColor3 = Color3.fromRGB(27, 42, 53)
+    Logohub.BorderSizePixel = 0
+    Logohub.Size = UDim2.new(0, 150, 0, 150)
+    Logohub.Image = "http://www.roblox.com/asset/?id=11605018570"
+
+    local Logo = Instance.new("ImageLabel")--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    
+    
+    Logo.Name = "Logo"
+    Logo.Parent = Main
+    Logo.AnchorPoint = Vector2.new(0.5, 0.5)
+    Logo.Position = UDim2.new(0.06, 0, 0.05, 0)
+    Logo.BackgroundTransparency = 1--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    Logo.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    Logo.BorderColor3 = Color3.fromRGB(27, 42, 53)
+    Logo.BorderSizePixel = 0
+    Logo.Size = UDim2.new(0, 57, 0, 57)
+    Logo.Image = "http://www.roblox.com/asset/?id=11605018570"
+    
+    local PageTap = Instance.new("Frame")
+    local UIGradient_PageTap = Instance.new("UIGradient")
+
+    PageTap.Name = "PageTap"
+    PageTap.Parent = Main
+    PageTap.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    PageTap.BackgroundTransparency = 1
+    PageTap.BorderSizePixel = 0
+    PageTap.Position = UDim2.new(0.189873412, 100, 0, 0)
+    PageTap.Size = UDim2.new(0, 350, 0, 56)
+
+    UIGradient_PageTap.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(230, 0, 39)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 35, 138))}
+    UIGradient_PageTap.Parent = PageTap
+
+    
+    local ScolTap = Instance.new("ScrollingFrame")
+    local UIListLayout_ScolTap = Instance.new("UIListLayout")
+    local UIPadding_ScolTap = Instance.new("UIPadding")
+
+    ScolTap.Name = "ScolTap"
+    ScolTap.Parent = PageTap--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    ScolTap.Active = true
+    ScolTap.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ScolTap.BackgroundTransparency = 1
+    ScolTap.BorderSizePixel = 0
+    ScolTap.Size = UDim2.new(0, 350, 0, 56)
+    ScolTap.CanvasSize = UDim2.new(0.5, 0, 0, 0)
+    ScolTap.ScrollBarThickness = 3
+    ScolTap.ScrollBarImageColor3 =  Color3.fromRGB(235, 235, 235)
+
+    UIListLayout_ScolTap.Parent = ScolTap
+    UIListLayout_ScolTap.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout_ScolTap.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_ScolTap.Padding = UDim.new(0, 5)
+
+    UIPadding_ScolTap.Parent = ScolTap
+    UIPadding_ScolTap.PaddingTop = UDim.new(0, 6)
+
+
+    local pagesFolder = Instance.new("Folder")
+
+    pagesFolder.Name = "pagesFolder"
+    pagesFolder.Parent = Main
+  
+    MakeDraggable(Main,Main)
+    local tween = game:GetService("TweenService")
+    local library = {currenttab = '',toggledui = false}
+    tween:Create(Main,TweenInfo.new(0.4,Enum.EasingStyle.Back),{Size = UDim2.new(0, 550, 0, 550)}):Play()
+
+
+    game:GetService("UserInputService").InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.RightControl then 
+            if library.toggledui == false then
+                library.toggledui = true  
+                tween:Create(Main,TweenInfo.new(0.4,Enum.EasingStyle.Back,Enum.EasingDirection.In),{Size = UDim2.new(0, 0, 0, 0)}):Play()
+            else 
+                library.toggledui = false 
+                tween:Create(Main,TweenInfo.new(0.4,Enum.EasingStyle.Back),{Size = UDim2.new(0, 550, 0, 550)}):Play()
+            end 
+        end
+    end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+
+local tap = {}
+
+function tap:addtap(text)
+
+    local TextButton_Tap = Instance.new("TextButton")
+
+    TextButton_Tap.Parent = ScolTap
+    TextButton_Tap.Name = "TextButton_Tap"
+    TextButton_Tap.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextButton_Tap.BackgroundTransparency = 1
+    TextButton_Tap.Position = UDim2.new(0.0151898731, 0, 0.132352948, 0)
+    TextButton_Tap.Size = UDim2.new(0, 75, 0, 50)
+    TextButton_Tap.Font = Enum.Font.GothamBold
+    TextButton_Tap.TextColor3 = Color3.fromRGB(155, 155, 155)
+    TextButton_Tap.TextSize = 15.000
+    TextButton_Tap.TextWrapped = true
+    TextButton_Tap.Text = text
+    --by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    
+
+    local TextLabel_Tap = Instance.new("TextLabel") 
+
+    TextLabel_Tap.Parent = TextButton_Tap
+    TextLabel_Tap.Name = "TextLabel_Tap"
+    TextLabel_Tap.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_Tap.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabel_Tap.Position = UDim2.new(0.52, 0, 0.8, 0)
+    TextLabel_Tap.Size = UDim2.new(0, 0, 0, 0)
+    TextLabel_Tap.Font = Enum.Font.GothamBold
+    TextLabel_Tap.Text = " "
+    TextLabel_Tap.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_Tap.TextSize = 20.000
+    TextLabel_Tap.BorderSizePixel = 0
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+
+    local MainFramePage = Instance.new("Frame")
+
+    
+    MainFramePage.Name = "MainFramePage"
+    MainFramePage.Parent = pagesFolder
+    MainFramePage.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    MainFramePage.BorderSizePixel = 0
+    MainFramePage.Position = UDim2.new(0, 0, 0.141772151, 150)
+    MainFramePage.Size = UDim2.new(0, 550, 0, 339)
+    MainFramePage.Visible = false 
+
+
+
+    local FramePage = Instance.new("Frame")
+    local ScolPage = Instance.new("ScrollingFrame")
+    local MainPage = Instance.new("Frame")
+    local UIGridLayout_MainPage = Instance.new("UIGridLayout")
+    local UIListLayout_MainPage = Instance.new("UIListLayout")
+    local UIPadding_MainPage = Instance.new("UIPadding")
+
+    --Properties:
+
+    FramePage.Name = "FramePage"
+    FramePage.Parent = MainFramePage
+    FramePage.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    FramePage.BorderSizePixel = 0
+    FramePage.ClipsDescendants = true
+    FramePage.Position = UDim2.new(0, 0, 0.02359882, 0)
+    FramePage.Size = UDim2.new(0, 550, 0, 331)
+    FramePage.Visible = true 
+
+    ScolPage.Name = "ScolPage"
+    ScolPage.Parent = FramePage
+    ScolPage.Active = true
+    ScolPage.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    ScolPage.BorderSizePixel = 0
+    ScolPage.Size = UDim2.new(0, 550, 0, 324)
+    ScolPage.ScrollBarThickness = 3
+    ScolPage.ScrollBarImageColor3 =  Color3.fromRGB(102, 204, 102)
+
+    MainPage.Name = "MainPage"
+    MainPage.Parent = ScolPage
+    MainPage.BackgroundTransparency = 1 
+    MainPage.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    MainPage.BorderSizePixel = 0
+    MainPage.Size = UDim2.new(0, 550, 0, 324)
+
+    UIGridLayout_MainPage.Parent = MainPage
+    UIGridLayout_MainPage.SortOrder = Enum.SortOrder.LayoutOrder
+    UIGridLayout_MainPage.CellPadding = UDim2.new(0, 20, 0, 10)
+    UIGridLayout_MainPage.CellSize = UDim2.new(0, 250, 0, 295)
+
+    UIListLayout_MainPage.Parent = MainPage
+    UIListLayout_MainPage.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_MainPage.Padding = UDim.new(0, 5)
+
+    UIPadding_MainPage.Parent = MainPage
+    UIPadding_MainPage.PaddingLeft = UDim.new(0, 16)
+    UIPadding_MainPage.PaddingTop = UDim.new(0, 10)
+
+
+    TextButton_Tap.MouseButton1Click:connect(function (  )
+        currentservertoggled = MainPage.Name
+        for i, v in next, pagesFolder:GetChildren() do
+            if v.Name == "MainFramePage" then
+                -- TweenService:Create(
+                --     fucklib,
+                --     TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                --     {BackgroundTransparency = 0}
+                -- ):Play()
+                v.Visible = false
+
+            end
+
+            MainFramePage.Visible = true
+       --     wait(0.125)
+            -- TweenService:Create(
+            --     fucklib,
+            --     TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            --     {BackgroundTransparency = 1}
+            -- ):Play()
+        --    MainPage:TweenSizeAndPosition(UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 0.5, 0), "In", "Quad", 0.15, true)
+        end--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+        
+    for i ,v in next , ScolTap:GetChildren() do
+        if v:IsA("TextButton") then
+            TweenService:Create(
+                v.TextLabel_Tap,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {Size = UDim2.new(0, 0, 0, 0)}
+            ):Play()
+            TweenService:Create(
+                v,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {TextColor3 = Color3.fromRGB(155, 155, 155)}
+            ):Play()
+            
+            
+        end
+        TweenService:Create(
+            TextLabel_Tap,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {Size = UDim2.new(0, 50, 0, 2)}
+        ):Play()
+        TweenService:Create(
+            TextButton_Tap,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextColor3 = Color3.fromRGB(255, 255, 255)}
+        ):Play()
+    end
+ end)
+
+
+
+    if fs == false then
+        TweenService:Create(
+            TextLabel_Tap,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {Size = UDim2.new(0, 50, 0, 2)}
+        ):Play()
+        TweenService:Create(
+            TextButton_Tap,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextColor3 = Color3.fromRGB(255, 255, 255)}
+        ):Play()
+
+        MainFramePage.Visible = true
+        MainFramePage.Name  = text .. "Server"
+        fs  = true
+    end
+
+local page = {}
+
+function page:addpage()
+
+    local Page = Instance.new("Frame")
+    local ScolPage2 = Instance.new("ScrollingFrame")
+    
+    
+    Page.Name = "Page"
+    Page.Parent = MainPage
+    Page.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    Page.BorderSizePixel = 0
+    Page.Position = UDim2.new(0.51645571, 0, 0.0526315793, 0)
+    Page.Size = UDim2.new(0, 250, 0, 262)
+    
+    ScolPage2.Name = "ScolPage"
+    ScolPage2.Parent = Page
+    ScolPage2.Active = true
+    ScolPage2.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    ScolPage2.BorderSizePixel = 0
+    ScolPage2.Size = UDim2.new(0, 265, 0, 298)
+    ScolPage2.ScrollBarThickness = 3
+    ScolPage2.ScrollBarImageColor3 =  Color3.fromRGB(235, 235, 235)
+    
+
+    local UIListLayout_ScolPage2 = Instance.new("UIListLayout")
+
+    UIListLayout_ScolPage2.Parent = ScolPage2
+    UIListLayout_ScolPage2.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_ScolPage2.Padding = UDim.new(0, 7)
+
+    
+    local UIPadding_ScolPage2 = Instance.new("UIPadding")
+
+    UIPadding_ScolPage2.Parent = ScolPage2
+    UIPadding_ScolPage2.PaddingLeft = UDim.new(0,15)
+    UIPadding_ScolPage2.PaddingTop = UDim.new(0, 15)
+
+    game:GetService("RunService").Stepped:Connect(function ()
+        pcall(function ()
+              ScolTap.CanvasSize = UDim2.new(0,UIListLayout_ScolTap.AbsoluteContentSize.X  ,0,0)  
+              ScolPage.CanvasSize = UDim2.new(0,0,0,UIGridLayout_MainPage.AbsoluteContentSize.Y + 20 )  
+              ScolPage2.CanvasSize = UDim2.new(0,0,0,UIListLayout_ScolPage2.AbsoluteContentSize.Y+ 30 )  
+        end)
+    end)
+
+    
+local ems = {}
+
+function ems:Button(text,callback)
+    
+
+
+    local ToggleFrame = Instance.new("Frame")
+    
+    ToggleFrame.Name = "ToggleFrame"
+    ToggleFrame.Parent = ScolPage2
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.BackgroundTransparency = 1
+    ToggleFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleFrame.Size = UDim2.new(0, 230, 0, 22)
+
+    local emsTextButton = Instance.new("TextButton")
+
+    emsTextButton.Parent = ToggleFrame
+    emsTextButton.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+    emsTextButton.BackgroundTransparency = 1
+    emsTextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    emsTextButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    emsTextButton.Size = UDim2.new(1, 0, 0.8, 0)
+    emsTextButton.Font = Enum.Font.GothamSemibold
+    emsTextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    emsTextButton.TextSize = 13.000
+    emsTextButton.TextWrapped = true
+    emsTextButton.Text = ""
+    emsTextButton.BorderSizePixel = 0
+    emsTextButton.AutoButtonColor = false 
+
+    local TextButton_Pageframe_Uiconner = Instance.new("UICorner")
+            
+    TextButton_Pageframe_Uiconner.CornerRadius = UDim.new(0, 3)
+    TextButton_Pageframe_Uiconner.Name = ""
+    TextButton_Pageframe_Uiconner.Parent = ToggleFrame
+
+    local TextLabel_emsTextButton = Instance.new("TextLabel") 
+
+    TextLabel_emsTextButton.Parent = emsTextButton
+    TextLabel_emsTextButton.Name = "TextLabel_emsTextButton"
+    TextLabel_emsTextButton.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    TextLabel_emsTextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabel_emsTextButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    TextLabel_emsTextButton.Size = UDim2.new(0, 0, 0, 0)
+    TextLabel_emsTextButton.Font = Enum.Font.GothamSemibold
+    TextLabel_emsTextButton.Text = text
+    TextLabel_emsTextButton.TextColor3 = Color3.fromRGB(102, 204, 102)
+    TextLabel_emsTextButton.TextSize = 10.000
+    TextLabel_emsTextButton.BorderSizePixel = 0
+
+    local MheeFrameStroke = Instance.new("UIStroke",ToggleFrame)
+                    
+    MheeFrameStroke.Thickness = 1
+    MheeFrameStroke.LineJoinMode = Enum.LineJoinMode.Round
+    MheeFrameStroke.Color = Color3.fromRGB(102, 204, 102)
+    MheeFrameStroke.Transparency = 0
+
+    emsTextButton.MouseButton1Click:Connect(function()
+        TweenService:Create(
+            TextLabel_emsTextButton,
+            TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextSize =5} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        wait(0.1)
+        TweenService:Create(
+            TextLabel_emsTextButton,
+            TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextSize = 10} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        pcall(callback)
+    end)
+
+    
+    emsTextButton.MouseEnter:Connect(function (  )
+    --    if joincheck.check1 == false then
+
+            TweenService:Create(
+                emsTextButton,
+                TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {BackgroundColor3 =  Color3.fromRGB(102, 204, 102)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+--     end
+        -- joincheck = not joincheck
+        -- callback(joincheck)
+    end)
+    emsTextButton.MouseLeave:Connect(function (  )
+
+            TweenService:Create(
+                emsTextButton,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {BackgroundColor3 =  Color3.fromRGB(102, 204, 102)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+    end)
+end
+
+function ems:Button1(text,callback)
+
+    local ToggleFrame1 = Instance.new("Frame")
+    
+    ToggleFrame1.Name = "ToggleFrame"
+    ToggleFrame1.Parent = ScolPage2
+    ToggleFrame1.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    ToggleFrame1.BorderSizePixel = 0
+    ToggleFrame1.BackgroundTransparency = 0
+    ToggleFrame1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleFrame1.Size = UDim2.new(0, 230, 0, 22)
+
+    local emsTextButton1 = Instance.new("TextButton")
+
+    emsTextButton1.Parent = ToggleFrame1
+    emsTextButton1.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+    emsTextButton1.BackgroundTransparency = 1
+    emsTextButton1.AnchorPoint = Vector2.new(0.5, 0.5)
+    emsTextButton1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    emsTextButton1.Size = UDim2.new(1, 0, 0.8, 0)
+    emsTextButton1.Font = Enum.Font.GothamSemibold
+    emsTextButton1.TextColor3 = Color3.fromRGB(255, 255, 255)
+    emsTextButton1.TextSize = 13.000
+    emsTextButton1.TextWrapped = true
+    emsTextButton1.Text = ""
+    emsTextButton1.BorderSizePixel = 0
+    emsTextButton1.AutoButtonColor = false 
+
+    local TextButton_Pageframe_Uiconner1 = Instance.new("UICorner")
+            
+    TextButton_Pageframe_Uiconner1.CornerRadius = UDim.new(0, 3)
+    TextButton_Pageframe_Uiconner1.Name = ""
+    TextButton_Pageframe_Uiconner1.Parent = ToggleFrame1
+
+    local TextLabel_emsTextButton1 = Instance.new("TextLabel") 
+
+    TextLabel_emsTextButton1.Parent = emsTextButton1
+    TextLabel_emsTextButton1.Name = "TextLabel_emsTextButton"
+    TextLabel_emsTextButton1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_emsTextButton1.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabel_emsTextButton1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    TextLabel_emsTextButton1.Size = UDim2.new(0, 0, 0, 0)
+    TextLabel_emsTextButton1.Font = Enum.Font.GothamSemibold
+    TextLabel_emsTextButton1.Text = text
+    TextLabel_emsTextButton1.TextColor3 = Color3.fromRGB(255, 255 ,255)
+    TextLabel_emsTextButton1.TextSize = 10.000
+    TextLabel_emsTextButton1.BorderSizePixel = 0
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    local MheeFrameStroke1 = Instance.new("UIStroke",ToggleFrame1)
+                    --by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    MheeFrameStroke1.Thickness = 1
+    MheeFrameStroke1.LineJoinMode = Enum.LineJoinMode.Round
+    MheeFrameStroke1.Color = Color3.fromRGB(102, 204, 102)
+    MheeFrameStroke1.Transparency = 0
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    emsTextButton1.MouseButton1Click:Connect(function()
+        TweenService:Create(
+            TextLabel_emsTextButton1,
+            TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextSize =5} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        wait(0.1)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+        TweenService:Create(
+            TextLabel_emsTextButton1,
+            TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {TextSize = 10} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        pcall(callback)
+    end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    
+    emsTextButton1.MouseEnter:Connect(function (  )
+    --    if joincheck.check1 == false then
+
+            TweenService:Create(
+                emsTextButton1,
+                TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {BackgroundColor3 =  Color3.fromRGB(255, 255, 255)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+--     end
+        -- joincheck = not joincheck--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+        -- callback(joincheck)
+    end)
+    emsTextButton1.MouseLeave:Connect(function (  )
+
+            TweenService:Create(
+                emsTextButton1,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {BackgroundColor3 =  Color3.fromRGB(255, 255, 255)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+    end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+end
+
+function  ems:Toggle(text,de,callback)
+
+    local togdoc = {boolen = false ; }--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    local ToggleFrame = Instance.new("Frame")
+    
+    ToggleFrame.Name = "ToggleFrame"
+    ToggleFrame.Parent = ScolPage2
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.BackgroundTransparency = 1
+    ToggleFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleFrame.Size = UDim2.new(0, 10, 0, 30)
+    
+    local ToggleButton = Instance.new("TextButton")
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    ToggleButton.Parent = ToggleFrame
+    ToggleButton.BackgroundColor3 = Color3.fromRGB( 0, 0, 60)
+    ToggleButton.BackgroundTransparency = 1
+    ToggleButton.AnchorPoint = Vector2.new(0, 0.5)
+    ToggleButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleButton.Size = UDim2.new(0, 130, 0, 25)
+    ToggleButton.Font = Enum.Font.GothamSemibold
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.TextSize = 13.000
+    ToggleButton.TextWrapped = false
+    ToggleButton.Text = ""
+    ToggleButton.BorderSizePixel = 0 
+    ToggleButton.AutoButtonColor = false 
+    ToggleButton.ClipsDescendants = true 
+
+    local ToggleButton2 = Instance.new("TextButton")
+
+    ToggleButton2.Parent = ToggleFrame
+    ToggleButton2.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    ToggleButton2.BackgroundTransparency = 1
+    ToggleButton2.AnchorPoint = Vector2.new(0.5, 0.5)
+    ToggleButton2.Position = UDim2.new(1, 0, 0.45, 0)
+    ToggleButton2.Size = UDim2.new(0, 20, 0, 20)
+    ToggleButton2.Font = Enum.Font.GothamSemibold
+    ToggleButton2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton2.TextSize = 13.000
+    ToggleButton2.TextWrapped = false
+    ToggleButton2.Text = ""
+    ToggleButton2.BorderSizePixel = 0 
+
+
+    local TextLabelToggle = Instance.new("TextLabel") 
+
+    TextLabelToggle.Parent = ToggleButton
+    TextLabelToggle.Name = "TextLabelToggle"
+    TextLabelToggle.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    TextLabelToggle.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabelToggle.Position = UDim2.new(0.64, 0, 0.4, 0)
+    TextLabelToggle.Size =  UDim2.new(0, 150, 0, 40)
+    TextLabelToggle.Font = Enum.Font.GothamBold
+    TextLabelToggle.Text = tostring(text)
+    TextLabelToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabelToggle.TextSize = 15.000
+    TextLabelToggle.BorderSizePixel = 0
+    TextLabelToggle.TextScaled = true
+    TextLabelToggle.BackgroundTransparency = 1
+    TextLabelToggle.TextXAlignment = Enum.TextXAlignment.Left
+    local resizetext2 =  Instance.new("UITextSizeConstraint",TextLabelToggle)
+    resizetext2.MaxTextSize = 11
+    
+    local TextButton_2_Toggle = Instance.new("TextButton")
+
+    TextButton_2_Toggle.Parent = ToggleButton2
+    TextButton_2_Toggle.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    TextButton_2_Toggle.BorderColor3 = Color3.fromRGB(249, 53, 139)
+    TextButton_2_Toggle.BorderSizePixel = 0
+    TextButton_2_Toggle.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextButton_2_Toggle.Position = UDim2.new(11, 0, 0.5, 0)
+    TextButton_2_Toggle.Size = UDim2.new(0, 19, 0, 19)
+    TextButton_2_Toggle.Font = Enum.Font.SourceSans
+    TextButton_2_Toggle.Text = " "
+    TextButton_2_Toggle.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextButton_2_Toggle.TextSize = 12.000
+    TextButton_2_Toggle.AutoButtonColor = false 
+
+    local TextButton_3_Toggle = Instance.new("TextButton")
+
+
+    TextButton_3_Toggle.Parent = TextButton_2_Toggle
+    TextButton_3_Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    TextButton_3_Toggle.BorderColor3 = Color3.fromRGB(102, 204, 102)
+    TextButton_3_Toggle.BorderSizePixel = 0
+    TextButton_3_Toggle.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextButton_3_Toggle.Position = UDim2.new(0.5, 0, 0.5, 0)
+    TextButton_3_Toggle.Size = UDim2.new(0, 17, 0, 17)
+    TextButton_3_Toggle.Font = Enum.Font.SourceSans
+    TextButton_3_Toggle.Text = " "
+    TextButton_3_Toggle.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextButton_3_Toggle.TextSize = 12.000
+    TextButton_3_Toggle.AutoButtonColor = false 
+
+    local ImageLabel_Toggle = Instance.new("ImageButton")
+
+
+    ImageLabel_Toggle.Parent = TextButton_2_Toggle
+    ImageLabel_Toggle.BackgroundTransparency = 1
+    ImageLabel_Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageLabel_Toggle.Size = UDim2.new(0, 0, 0, 0)
+    ImageLabel_Toggle.Image = "rbxassetid://9649923603"
+    ImageLabel_Toggle.AnchorPoint = Vector2.new(0.5, 0.5)
+    ImageLabel_Toggle.Position = UDim2.new(0.47, 0, 0.5, 0)
+
+
+    local FrameToggle = Instance.new("UICorner")
+            
+    FrameToggle.CornerRadius = UDim.new(0, 20)
+    FrameToggle.Name = ""
+    FrameToggle.Parent = emsTextButton
+
+    local FrameToggle1 = Instance.new("UICorner")
+            
+    FrameToggle1.CornerRadius = UDim.new(0, 20)
+    FrameToggle1.Name = ""
+    FrameToggle1.Parent = TextButton_2_Toggle
+
+    local FrameToggle2 = Instance.new("UICorner")
+            
+    FrameToggle2.CornerRadius = UDim.new(0, 20)
+    FrameToggle2.Name = ""
+    FrameToggle2.Parent = ImageLabel_Toggle
+
+    local FrameToggle3 = Instance.new("UICorner")
+            
+    FrameToggle3.CornerRadius = UDim.new(0, 20)
+    FrameToggle3.Name = ""
+    FrameToggle3.Parent = TextButton_3_Toggle
+
+    TextButton_3_Toggle.MouseButton1Click:Connect(function (  )
+        if togdoc.boolen ==false then
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 23, 0, 23), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+        else
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+     --       ImageLabel_Toggle.Visible = false
+        end
+        togdoc.boolen = not togdoc.boolen
+        pcall(callback,togdoc.boolen)
+    end)
+
+    ImageLabel_Toggle.MouseButton1Click:Connect(function (  )
+        if togdoc.boolen ==false then
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 23, 0, 23), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+        else
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+     --       ImageLabel_Toggle.Visible = false
+        end
+        togdoc.boolen = not togdoc.boolen
+        pcall(callback,togdoc.boolen)
+    end)
+
+    TextButton_2_Toggle.MouseButton1Click:Connect(function (  )
+        if togdoc.boolen ==false then
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 19, 0, 19), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+        else
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+     --       ImageLabel_Toggle.Visible = false
+        end
+        togdoc.boolen = not togdoc.boolen
+        pcall(callback,togdoc.boolen)
+    end)
+
+
+    ToggleButton.MouseButton1Click:Connect(function (  )
+        if togdoc.boolen ==false then
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 19, 0, 19), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+        else
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+     --       ImageLabel_Toggle.Visible = false
+        end
+        togdoc.boolen = not togdoc.boolen
+        pcall(callback,togdoc.boolen)
+    end)
+
+        if de == true then
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 27, 0, 27), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            wait(0.1)
+            ImageLabel_Toggle:TweenSizeAndPosition(UDim2.new(0, 19, 0, 19), UDim2.new(0.5, 0, 0.5, 0), "In", "Bounce", 0.1, true)
+            togdoc.boolen = not togdoc.boolen
+            pcall(callback,togdoc.boolen)
+        end
+    end
+
+function ems:DropDown(text,text2,list,callback)
+
+
+    local checkdrop = {checkscol = false ; }
+    local DropFrame = Instance.new("Frame")
+    local dropfuc = {}
+
+    DropFrame.Name = "DropFrame"
+    DropFrame.Parent = ScolPage2
+    DropFrame.BackgroundColor3 = Color3.fromRGB(29,29,29)
+    DropFrame.BorderSizePixel = 0
+    DropFrame.BackgroundTransparency = 1
+    DropFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropFrame.Size = UDim2.new(0, 230, 0, 45)
+    DropFrame.BackgroundTransparency = 1
+    DropFrame.ClipsDescendants = true 
+
+    local TextLabelDrop = Instance.new("TextLabel") 
+
+    TextLabelDrop.Parent = DropFrame
+    TextLabelDrop.Name = "TextLabelDrop"
+    TextLabelDrop.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+    TextLabelDrop.BackgroundTransparency = 1
+    TextLabelDrop.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabelDrop.Position = UDim2.new(0.2, 0, 0.2, 0)
+    TextLabelDrop.Size = UDim2.new(0, 230, 0, 15)
+    TextLabelDrop.Font = Enum.Font.GothamBold
+    TextLabelDrop.Text = text
+    TextLabelDrop.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabelDrop.TextSize = 10.000
+    TextLabelDrop.BorderSizePixel = 0
+    TextLabelDrop.ClipsDescendants = true 
+
+    local FrameDrop = Instance.new("Frame")
+    
+    FrameDrop.Name = "FrameDrop"
+    FrameDrop.Parent = DropFrame
+    FrameDrop.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+    FrameDrop.BorderSizePixel = 0
+    FrameDrop.BackgroundTransparency = 1
+    FrameDrop.AnchorPoint = Vector2.new(0.5, 0.5)
+    FrameDrop.Position = UDim2.new(0.5, 0, 0.75, 0)
+    FrameDrop.Size = UDim2.new(0, 230, 0, 27)
+    FrameDrop.BackgroundTransparency = 0
+    FrameDrop.ClipsDescendants = true 
+
+    local DropButton = Instance.new("TextButton")
+
+    DropButton.Parent = FrameDrop
+    DropButton.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+    DropButton.BackgroundTransparency = 1
+    DropButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropButton.Size = UDim2.new(0, 230, 0, 24)
+    DropButton.Font = Enum.Font.GothamBold
+    DropButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DropButton.TextSize = 11.000
+    DropButton.TextWrapped = true
+    DropButton.Text = ""
+    DropButton.BorderSizePixel = 0 
+    DropButton.AutoButtonColor = false 
+    DropButton.ClipsDescendants = true 
+
+    local TextLabelDrop2 = Instance.new("TextLabel") 
+
+    TextLabelDrop2.Parent = DropButton
+    TextLabelDrop2.Name = "TextLabelDrop"
+    TextLabelDrop2.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+    TextLabelDrop2.BackgroundTransparency = 1
+    TextLabelDrop2.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextLabelDrop2.Position = UDim2.new(0.5, 0, 0.5, 0)
+    TextLabelDrop2.Size = UDim2.new(0, 230, 0, 22)
+    TextLabelDrop2.Font = Enum.Font.GothamBold
+    TextLabelDrop2.Text = text2.." : "
+    TextLabelDrop2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabelDrop2.TextSize = 10.000
+    TextLabelDrop2.BorderSizePixel = 0
+    TextLabelDrop2.ClipsDescendants = true 
+
+    local DropConer = Instance.new("UICorner")
+            
+    DropConer.CornerRadius = UDim.new(0, 4)
+    DropConer.Name = ""
+    DropConer.Parent = DropButton
+
+    local DropConer1 = Instance.new("UICorner")
+            
+    DropConer1.CornerRadius = UDim.new(0, 4)
+    DropConer1.Name = ""
+    DropConer1.Parent = FrameDrop
+    
+
+    
+    local TextButton_Dropdown = Instance.new("TextButton")
+
+    TextButton_Dropdown.Parent = DropButton
+    TextButton_Dropdown.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+    TextButton_Dropdown.BorderSizePixel = 0
+    TextButton_Dropdown.Size = UDim2.new(0, 22, 0, 24)
+    TextButton_Dropdown.Font = Enum.Font.SourceSans
+    TextButton_Dropdown.Text = "  "
+    TextButton_Dropdown.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextButton_Dropdown.TextSize = 14.000
+    TextButton_Dropdown.AutoButtonColor = false 
+    TextButton_Dropdown.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextButton_Dropdown.Position = UDim2.new(0.91, 0, 0.5, 0)
+    
+    local DropConer2 = Instance.new("UICorner")
+            
+    DropConer2.CornerRadius = UDim.new(0, 4)
+    DropConer2.Name = ""
+    DropConer2.Parent = TextButton_Dropdown
+
+    local DropArbt_listimage = Instance.new("ImageButton")
+                            
+    DropArbt_listimage.Parent = TextButton_Dropdown
+    DropArbt_listimage.BackgroundTransparency = 1
+    DropArbt_listimage.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropArbt_listimage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropArbt_listimage.BorderSizePixel = 0
+    DropArbt_listimage.Size = UDim2.new(0, 20, 0, 20)
+    DropArbt_listimage.Image = "http://www.roblox.com/asset/?id=6031091004"
+
+    local ListFrame = Instance.new("Frame")
+    
+    ListFrame.Name = "ListFrame"
+    ListFrame.Parent = ScolPage2
+    ListFrame.BackgroundColor3 = Color3.fromRGB(0, 0 ,0)
+    ListFrame.BorderSizePixel = 0
+    ListFrame.BackgroundTransparency = 1
+    ListFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ListFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ListFrame.Size = UDim2.new(0, 230, 0, 0)
+    ListFrame.BorderSizePixel = 0 
+    ListFrame.ClipsDescendants = true 
+    ListFrame.Visible = false 
+
+    local ScolPage_list = Instance.new("ScrollingFrame")
+
+
+    local UIListLayout_MainPage_list = Instance.new("UIListLayout")
+    local UIPadding_MainPage_list = Instance.new("UIPadding")
+
+
+    ScolPage_list.Name = "ScolPage_list"
+    ScolPage_list.Parent = ListFrame
+    ScolPage_list.Active = true
+    ScolPage_list.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    ScolPage_list.BorderSizePixel = 0
+    ScolPage_list.Size = UDim2.new(0, 230, 0, 0)
+    ScolPage_list.ScrollBarThickness = 3
+    ScolPage_list.AnchorPoint = Vector2.new(0.5, 0.5)
+    ScolPage_list.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ScolPage_list.ClipsDescendants = true 
+    ScolPage_list.ScrollBarImageColor3 =  Color3.fromRGB(235, 235, 235)
+    ScolPage_list.ScrollBarImageColor3 =  Color3.fromRGB(235, 235, 235)
+
+    UIListLayout_MainPage_list.Parent = ScolPage_list
+    UIListLayout_MainPage_list.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_MainPage_list.Padding = UDim.new(0, 5)
+
+    UIPadding_MainPage_list.Parent = ScolPage_list
+    UIPadding_MainPage_list.PaddingLeft = UDim.new(0, 0)
+    UIPadding_MainPage_list.PaddingTop = UDim.new(0, 0)
+
+
+    local DropConer4 = Instance.new("UICorner")
+            
+    DropConer4.CornerRadius = UDim.new(0, 4)
+    DropConer4.Name = ""
+    DropConer4.Parent = ListFrame
+
+    local framesize =  50
+    local count = 0 
+    for i , v in pairs(list) do 
+        count = count + 1 
+        
+        if count == 1 then
+            framesize = 50 
+        elseif count == 2 then
+            framesize = 70 
+        elseif count >= 3 then
+            framesize = 150 
+        end
+
+    local listDropButton = Instance.new("TextButton")
+
+    listDropButton.Parent = ScolPage_list
+    listDropButton.BackgroundColor3 = Color3.fromRGB(15, 15 ,15)
+    listDropButton.BorderSizePixel = 0
+    listDropButton.Size = UDim2.new(0, 230, 0, 24)
+    listDropButton.Font = Enum.Font.GothamSemibold
+    listDropButton.Text = tostring(v)
+    listDropButton.TextColor3 = Color3.fromRGB(235,65,65)
+    listDropButton.TextSize = 11.000
+    listDropButton.AutoButtonColor = false 
+    listDropButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    listDropButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+    listDropButton.MouseButton1Click:Connect(function()
+        TweenService:Create(
+            ListFrame,
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        TweenService:Create(
+            ScolPage_list,
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        repeat
+            wait()
+        until ScolPage_list.Size ==  UDim2.new(0, 230, 0, 0)
+        ListFrame.Visible = false
+        TextLabelDrop2.Text = text2.." : "..tostring(v)  
+        callback(v)
+    end
+)
+
+    listDropButton.MouseEnter:Connect(function ()
+        TweenService:Create(
+            listDropButton,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {BackgroundColor3 = Color3.fromRGB(25, 25, 25)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+    end)
+    listDropButton.MouseLeave:Connect(function ()
+        TweenService:Create(
+            listDropButton,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {BackgroundColor3 = Color3.fromRGB(15, 15, 15)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+    end)
+
+    ScolPage_list.CanvasSize = UDim2.new(0,0,0,UIListLayout_MainPage_list.AbsoluteContentSize.Y + 10)  
+
+
+
+end
+
+    DropArbt_listimage.MouseButton1Click:Connect(function()     
+        if checkdrop.checkscol == false then 
+            ListFrame.Visible = true 
+            TweenService:Create(
+                DropArbt_listimage,
+                TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+                {Rotation = -180}
+            ):Play()
+            TweenService:Create(
+                ListFrame,
+                TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+                {Size =  UDim2.new(0, 230, 0, framesize)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+            TweenService:Create(
+                ScolPage_list,
+                TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+                {Size =  UDim2.new(0, 230, 0, framesize)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+
+    else
+        TweenService:Create(
+            DropArbt_listimage,
+            TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+            {Rotation = 0}
+        ):Play()
+        TweenService:Create(
+            ListFrame,
+            TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        TweenService:Create(
+            ScolPage_list,
+            TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        repeat
+            wait()
+        until ScolPage_list.Size ==  UDim2.new(0, 230, 0, 0)
+        ListFrame.Visible = false
+        end
+        checkdrop.checkscol  = not    checkdrop.checkscol  
+        pcall(callback,   checkdrop.checkscol )
+    end)
+
+
+    DropButton.MouseButton1Click:Connect(function()     
+        if checkdrop.checkscol == false then 
+            ListFrame.Visible = true 
+            TweenService:Create(
+                DropArbt_listimage,
+                TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+                {Rotation = -180}
+            ):Play()
+            TweenService:Create(
+                ListFrame,
+                TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+                {Size =  UDim2.new(0, 230, 0, framesize)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+            TweenService:Create(
+                ScolPage_list,
+                TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+                {Size =  UDim2.new(0, 230, 0, framesize)} -- UDim2.new(0, 128, 0, 25)
+            ):Play()
+
+    else
+        TweenService:Create(
+            DropArbt_listimage,
+            TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+            {Rotation = 0}
+        ):Play()
+        TweenService:Create(
+            ListFrame,
+            TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        TweenService:Create(
+            ScolPage_list,
+            TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 230, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        repeat
+            wait()
+        until ScolPage_list.Size ==  UDim2.new(0, 230, 0, 0)
+        ListFrame.Visible = false
+        end
+        checkdrop.checkscol  = not    checkdrop.checkscol  
+        pcall(callback,   checkdrop.checkscol )
+    end)
+
+    function dropfuc:Add(text2)
+       
+    local listDropButton = Instance.new("TextButton")
+
+    listDropButton.Parent = ScolPage_list
+    listDropButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    listDropButton.BorderSizePixel = 0
+    listDropButton.Size = UDim2.new(0, 230, 0, 24)
+    listDropButton.Font = Enum.Font.GothamBold
+    listDropButton.Text = tostring(text2)
+    listDropButton.TextColor3 = Color3.fromRGB(102, 204, 102)
+    listDropButton.TextSize = 11.000
+    listDropButton.AutoButtonColor = false 
+    listDropButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    listDropButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+
+
+    listDropButton.MouseButton1Click:Connect(function()
+        TweenService:Create(
+            ListFrame,
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 140, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        TweenService:Create(
+            ScolPage_list,
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Size =  UDim2.new(0, 140, 0, 0)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+        repeat
+            wait()
+        until ScolPage_list.Size ==  UDim2.new(0, 140, 0, 0)
+        ListFrame.Visible = false
+        TextLabelDrop2.Text = text.." : "..tostring(text2)  
+        callback(text2)
+    end
+)
+
+    listDropButton.MouseEnter:Connect(function ()
+        TweenService:Create(
+            listDropButton,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {BackgroundColor3 = Color3.fromRGB(25, 25, 25)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+    end)
+    listDropButton.MouseLeave:Connect(function ()
+        TweenService:Create(
+            listDropButton,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {BackgroundColor3 = Color3.fromRGB(15, 15, 15)} -- UDim2.new(0, 128, 0, 25)
+        ):Play()
+    end)
+
+    ScolPage_list.CanvasSize = UDim2.new(0,0,0,UIListLayout_MainPage_list.AbsoluteContentSize.Y + 10)  
+
+
+    end
+
+    function dropfuc:Clear()
+    for i, v in next, ScolPage_list:GetChildren() do
+        if v:IsA("TextButton")  then 
+        v:Destroy()
+        
+        end
+        ScolPage_list.CanvasSize = UDim2.new(0,0,0,UIListLayout_MainPage_list.AbsoluteContentSize.Y + 10)  
+    end   
+
+end  
+    return  dropfuc
+end
+
+function ems:Slder(text,min,max,de,callback)
+    local SliderFunc = {}
+    local SliderFrame = Instance.new("Frame")
+
+
+    SliderFrame.Name = "SliderFrame"
+    SliderFrame.Parent = ScolPage2
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SliderFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SliderFrame.Size = UDim2.new(0, 230, 0, 50)
+    SliderFrame.BackgroundTransparency = 1
+    SliderFrame.ClipsDescendants = true 
+
+    local fakeclick = Instance.new("TextButton",SliderFrame)
+
+    fakeclick.BackgroundColor3 = Color3.fromRGB(15,15,15)
+    fakeclick.BorderSizePixel = 0
+    fakeclick.Size = UDim2.new(1, 0, 1, 0)
+    fakeclick.Font = Enum.Font.GothamSemibold
+    fakeclick.Text = ""
+    fakeclick.TextColor3 = Color3.fromRGB(255, 255, 255)
+    fakeclick.Transparency = 1
+    fakeclick.TextSize = 10.000
+    fakeclick.AutoButtonColor = false 
+    fakeclick.AnchorPoint = Vector2.new(0.5, 0.5)
+    fakeclick.Position = UDim2.new(0.5, 0, 0.3, 0)
+
+    local Conner_SliderFrame1 = Instance.new("UICorner")
+       
+    Conner_SliderFrame1.CornerRadius = UDim.new(0, 5)
+    Conner_SliderFrame1.Name = ""
+    Conner_SliderFrame1.Parent = SliderFrame
+
+    local SlisFrameStroke = Instance.new("UIStroke",SliderFrame)
+                    
+    SlisFrameStroke.Thickness = 1
+    SlisFrameStroke.LineJoinMode = Enum.LineJoinMode.Round
+    SlisFrameStroke.Color = Color3.fromRGB(102, 204, 102)
+    SlisFrameStroke.Transparency = 0
+    local TalabelSlider = Instance.new("TextLabel") 
+
+    TalabelSlider.Parent = SliderFrame
+    TalabelSlider.Name = "TalabelSlider"
+    TalabelSlider.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    TalabelSlider.BackgroundTransparency = 1
+    TalabelSlider.AnchorPoint = Vector2.new(0.5, 0.5)
+    TalabelSlider.Position = UDim2.new(0.5, 0, 0.3, 0)
+    TalabelSlider.Size = UDim2.new(0, 200, 0, 20)
+    TalabelSlider.Font = Enum.Font.GothamSemibold
+    TalabelSlider.Text = text
+    TalabelSlider.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TalabelSlider.TextSize = 11.000
+    TalabelSlider.BorderSizePixel = 0
+    TalabelSlider.ClipsDescendants = true 
+    TalabelSlider.TextXAlignment = Enum.TextXAlignment.Left
+
+       
+    local ValueFrame = Instance.new("Frame")
+
+    ValueFrame.Name = "ValueFrame"
+    ValueFrame.Parent = SliderFrame
+    ValueFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    ValueFrame.BorderSizePixel = 0
+    ValueFrame.BackgroundTransparency = 0
+    ValueFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    ValueFrame.Position = UDim2.new(0.5, 0, 0.7, 0)
+    ValueFrame.Size = UDim2.new(0, 200, 0, 20)
+    ValueFrame.BackgroundTransparency = 1
+    ValueFrame.ClipsDescendants = true 
+
+    local SecValue = Instance.new("Frame")
+
+    SecValue.Name = "SecValue"
+    SecValue.Parent = ValueFrame
+    SecValue.BackgroundColor3 = Color3.fromRGB(155, 155, 155)
+    SecValue.BorderSizePixel = 0
+    SecValue.BackgroundTransparency = 0
+    SecValue.AnchorPoint = Vector2.new(0.5, 0.5)
+    SecValue.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SecValue.Size = UDim2.new(0, 190, 0, 4)
+    SecValue.BackgroundTransparency = 0
+    SecValue.ClipsDescendants = false 
+
+    
+    local MainValue = Instance.new("Frame")
+
+    MainValue.Name = "MainValue"
+    MainValue.Parent = SecValue
+    MainValue.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    MainValue.BorderSizePixel = 0
+    MainValue.BackgroundTransparency = 0
+    -- MainValue.AnchorPoint = Vector2.new(0.5, 0.5)
+    MainValue.Position = UDim2.new(0., 0, 0., 0)
+    MainValue.Size = UDim2.new((de or 0) / max, 0, 0, 4)
+    MainValue.BackgroundTransparency = 0
+    MainValue.ClipsDescendants = false 
+
+     
+    local ConneValue = Instance.new("Frame")
+
+    ConneValue.Name = "ConneValue"
+    ConneValue.Parent = SecValue
+    ConneValue.BackgroundColor3 = Color3.fromRGB(255,255, 255)
+    ConneValue.Size = UDim2.new(0, 10, 0, 10)
+    ConneValue.BackgroundTransparency = 0
+    ConneValue.BorderSizePixel = 0 
+    ConneValue.AnchorPoint = Vector2.new(0.5, 0.5)
+    ConneValue.Position = UDim2.new((de or 0)/max, 0.5, 0.5,0.5, 0) 
+    ConneValue.ClipsDescendants = false 
+
+    local Conner_Conne = Instance.new("UICorner")
+                    
+    Conner_Conne.CornerRadius = UDim.new(0, 10)
+    Conner_Conne.Name = ""
+    Conner_Conne.Parent = ConneValue
+
+            
+    local ScolDown_Uiconner2 = Instance.new("UICorner")
+                
+    ScolDown_Uiconner2.CornerRadius = UDim.new(0, 8)
+    ScolDown_Uiconner2.Name = ""
+    ScolDown_Uiconner2.Parent = MainValue
+
+    local ScolDown_Uiconner3 = Instance.new("UICorner")
+        
+    ScolDown_Uiconner3.CornerRadius = UDim.new(0, 8)
+    ScolDown_Uiconner3.Name = ""
+    ScolDown_Uiconner3.Parent = SecValue
+
+
+    
+    local ShowValueFarm = Instance.new("Frame")
+
+    ShowValueFarm.Name = "ShowValueFarm"
+    ShowValueFarm.Parent = SliderFrame
+    ShowValueFarm.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    ShowValueFarm.Size = UDim2.new(0, 50, 0, 14)
+    ShowValueFarm.BackgroundTransparency = 1
+    ShowValueFarm.BorderSizePixel = 0 
+    ShowValueFarm.AnchorPoint = Vector2.new(0.5, 0.5)
+    ShowValueFarm.Position = UDim2.new(0.80, 0, 0.28, 0)
+    ShowValueFarm.ClipsDescendants = false
+
+    local MheeFrameStroke1 = Instance.new("UIStroke",ShowValueFarm)
+                    
+    MheeFrameStroke1.Thickness = 1
+    MheeFrameStroke1.LineJoinMode = Enum.LineJoinMode.Round
+    MheeFrameStroke1.Color = Color3.fromRGB(102, 204, 102)
+    MheeFrameStroke1.Transparency = 0
+
+    local CustomValue = Instance.new("TextBox")
+
+    CustomValue.Parent = ShowValueFarm
+    CustomValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CustomValue.BorderSizePixel = 0
+    CustomValue.ClipsDescendants = true
+    CustomValue.AnchorPoint = Vector2.new(0.5, 0.5)
+    CustomValue.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CustomValue.Size = UDim2.new(0, 145, 0, 26)
+    CustomValue.Font = Enum.Font.GothamSemibold
+    CustomValue.PlaceholderColor3 = Color3.fromRGB(222, 222, 222)
+    CustomValue.PlaceholderText =  ""
+    CustomValue.Text =  tostring(de and math.floor((de / max) * (max - min) + min) or 0)
+    CustomValue.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CustomValue.TextSize = 9.000
+    CustomValue.BackgroundTransparency = 1
+
+    local ScolDown_Uiconner3222 = Instance.new("UICorner")
+        
+    ScolDown_Uiconner3222.CornerRadius = UDim.new(0, 4)
+    ScolDown_Uiconner3222.Name = ""
+    ScolDown_Uiconner3222.Parent = ShowValueFarm
+    local function move(input)
+        local pos =
+            UDim2.new(
+                math.clamp((input.Position.X - SecValue.AbsolutePosition.X) / SecValue.AbsoluteSize.X, 0, 1),
+                0,
+                0.5,
+                0
+            )
+        local pos1 =
+            UDim2.new(
+                math.clamp((input.Position.X - SecValue.AbsolutePosition.X) / SecValue.AbsoluteSize.X, 0, 1),
+                0,
+                0,
+                5
+            )
+        
+            MainValue:TweenSize(pos1, "Out", "Sine", 0.2, true)
+
+            ConneValue:TweenPosition(pos, "Out", "Sine", 0.2, true)
+            local value = math.floor(((pos.X.Scale * max) / max) * (max - min) + min)
+            CustomValue.Text = tostring(value)
+            callback(value)
+
+        end
+        local dragging = false 
+        ConneValue.InputBegan:Connect(
+            function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
+
+                end
+            end
+        )
+        ConneValue.InputEnded:Connect(
+            function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = false
+                 
+                end
+            end
+        )
+            
+        
+        ValueFrame.InputBegan:Connect(
+            function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
+
+                end
+            end
+        )
+        ValueFrame.InputEnded:Connect(
+            function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = false
+                 
+                end
+            end
+        )
+
+
+        game:GetService("UserInputService").InputChanged:Connect(
+            function(input)
+                if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                    move(input)
+                end
+            end
+            )
+                   CustomValue.FocusLost:Connect(function()    
+                        MainValue:TweenSize(UDim2.new((CustomValue.Text or 0) / max, 0, 0, 5), "Out", "Sine", 0.2, true)
+                        ConneValue:TweenPosition(UDim2.new((CustomValue.Text or 0)/max, 0,0.5, 0) , "Out", "Sine", 0.2, true)
+                        CustomValue.Text = tostring(CustomValue.Text and math.floor((CustomValue.Text / max) * (max - min) + min) )
+                        pcall(callback,tonumber( CustomValue.Text))
+                        -- if  CustomValue.Text == "" then
+
+                        --     MainValue:TweenSize(UDim2.new((CustomValue.PlaceholderText  or 0) / max, 0, 0, 2), "Out", "Sine", 0.2, true)
+                        --     ConneValue:TweenPosition(UDim2.new((CustomValue.PlaceholderText  or 0)/max, 0,0, 0) , "Out", "Sine", 0.2, true)
+                        --     CustomValue.Text = tostring(CustomValue.PlaceholderText  and math.floor((    CustomValue.PlaceholderText  / max) * (max - min) + min) or 0)
+                        --     pcall(callback,CustomValue.PlaceholderText ) 
+                        -- end
+                    end)
+
+				function SliderFunc:change(tochange)
+                    MainValue:TweenSize(UDim2.new((tochange or 0) / max, 0, 0, 5), "Out", "Sine", 0.2, true)
+                    ConneValue:TweenPosition(UDim2.new((tochange or 0)/max, 0,0.5, 0) , "Out", "Sine", 0.2, true)
+					CustomValue.Text = tostring(tochange and math.floor((CustomValue.Text / max) * (max - min) + min) )
+					pcall(callback, tonumber(tochange))
 				end
-			end)
-		end,})
-	end
+                return  SliderFunc
+                
+end
+
+function ems:Ti(text)
+    local tiframe = Instance.new("Frame")
+
+    tiframe.Name = "tiframe"
+    tiframe.Parent = ScolPage2
+    tiframe.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tiframe.BackgroundTransparency = 1
+    tiframe.BorderSizePixel = 0
+    tiframe.ClipsDescendants = true
+    tiframe.AnchorPoint = Vector2.new(0.5, 0.5)
+    tiframe.Position = UDim2.new(0.5, 0, 0.5, 0)
+    tiframe.Size = UDim2.new(0, 230, 0, 20)
+
+    local  lineframe = Instance.new("TextLabel")
+                  
+    lineframe.Parent = tiframe
+    lineframe.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    lineframe.BackgroundTransparency = 0
+    lineframe.AnchorPoint = Vector2.new(0.6, 0.5)
+    lineframe.Position = UDim2.new(0., 0, 0.4, 0)
+    lineframe.BorderSizePixel = 0
+    lineframe.Size = UDim2.new(0, 40, 0, 1)
+    lineframe.Font = Enum.Font.GothamSemibold
+    lineframe.TextColor3 = Color3.fromRGB(255, 255, 255)
+    lineframe.TextSize = 13.000
+    lineframe.Text = ""
+
+    local  lineframe2 = Instance.new("TextLabel")
+                  
+    lineframe2.Parent = tiframe--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    lineframe2.BackgroundColor3 = Color3.fromRGB(102, 204, 102)
+    lineframe2.BackgroundTransparency = 0
+    lineframe2.AnchorPoint = Vector2.new(0.5, 0.5)
+    lineframe2.Position = UDim2.new(1, 0, 0.4, 0)
+    lineframe2.BorderSizePixel = 0
+    lineframe2.Size = UDim2.new(0, 40, 0, 1)
+    lineframe2.Font = Enum.Font.GothamSemibold
+    lineframe2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    lineframe2.TextSize = 11.000
+    lineframe2.Text = ""
+
+    local  lineframe3 = Instance.new("TextLabel")
+                  
+    lineframe3.Parent = tiframe
+    lineframe3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    lineframe3.BackgroundTransparency = 1
+    lineframe3.AnchorPoint = Vector2.new(0.5, 0.5)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    lineframe3.Position = UDim2.new(0.5, 0, 0.5, 0)
+    lineframe3.BorderSizePixel = 0
+    lineframe3.Size = UDim2.new(0, 130, 0, 20)
+    lineframe3.Font = Enum.Font.GothamBold
+    lineframe3.Text = tostring(text)
+    lineframe3.TextColor3 = Color3.fromRGB(102, 204, 102)
+    lineframe3.TextSize = 12.000
+end
+
+function ems:Label(text)--by ดิส แจกทุกอย่างทีม--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2ี https://discord.gg/NvGY2vEkV2
+
+    local labelfuc = {}
+    local  Labelxd = Instance.new("TextLabel")
+                  
+    Labelxd.Parent = ScolPage2
+    Labelxd.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Labelxd.BackgroundTransparency = 1
+    Labelxd.AnchorPoint = Vector2.new(0.5, 0.5)
+    Labelxd.Position = UDim2.new(0.5, 0, 0.8, 0)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    Labelxd.BorderSizePixel = 0
+    Labelxd.Size = UDim2.new(0, 75, 0, 13)
+    Labelxd.Font = Enum.Font.GothamSemibold
+    Labelxd.Text = tostring(text)
+    Labelxd.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Labelxd.TextSize = 12.000
+
+function  labelfuc:Re(text2)
+        Labelxd.Text = tostring(text2)
+    end
+    --by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+return  labelfuc
+end
+return ems 
+end
+return page
+end
+return tap
+end--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+
+local window = ui:win()
+local tap1 = window:addtap("Tab1")
+local tap2 = window:addtap("Tab2")
+local page1 = tap1:addpage()
+local page4 = tap1:addpage()
+local page2 = tap1:addpage()
+local page3 = tap1:addpage()
+local page5 = tap1:addpage()
+local page6 = tap1:addpage()--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+page1:Ti("Title")
+
+page1:Toggle("Toggle1",nil, function(value)
+    print(value)
 end)
 
-section.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Farm (Misc.)</font>'})
+page1:Button("Button1", function(value)
+    print(value)
+end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
 
-section.input("Toggle",{Title = "Auto Farm (Select)",default = false,callback = function(value)
-	auto_farm_select = value
-	if not auto_farm_select then
-		getnoclip(false,{})
-	end
-	task.spawn(function()
-		while auto_farm_select do
-			xpcall(function()
-				local mob_level = tonumber(string.match(select_mobs, "%[Lv%. (%d+)%]"))
-				local quest_level = "QuestLvl"..mob_level
-				if not auto_accept_quest_select then
-					if game:GetService("Workspace").Monster.Mon:FindFirstChild(tostring(select_mobs)) then
-						FolderMob = game:GetService("Workspace").Monster.Mon
-					elseif game:GetService("Workspace").Monster.Boss:FindFirstChild(tostring(select_mobs)) then
-						FolderMob = game:GetService("Workspace").Monster.Boss
-					end
-					for index , value in pairs(FolderMob:GetChildren()) do
-						if value.Name == select_mobs and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-							repeat task.wait()
-								getnoclip(true,{Method = "Gyro"})
-								if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-									tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-								else
-									method_farm(select_method_farm,value)
-								end
-							until not auto_farm_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-							getnoclip(false,{Method = "Gyro"})
-						else
-							tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-						end
-					end
-				else
-					task.spawn(function()
-						local questtext = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.QuestCount.Text
-						if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-							return
-						else
-							if tonumber(string.match(questtext, "%[Lv%. (%d+)%]")) ~= tonumber(mob_level) then
-								close_quest()
-							end
-						end
-					end)
-					if game:GetService("Players").LocalPlayer.CurrentQuest.Value == "" then
-						getquest(quest_level,true)
-					else
-						if game:GetService("Workspace").Monster.Mon:FindFirstChild(tostring(select_mobs)) then
-							FolderMob = game:GetService("Workspace").Monster.Mon
-						elseif game:GetService("Workspace").Monster.Boss:FindFirstChild(tostring(select_mobs)) then
-							FolderMob = game:GetService("Workspace").Monster.Boss
-						end
-						for index , value in pairs(FolderMob:GetChildren()) do
-							if value.Name == select_mobs and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_farm_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = game:GetService("Workspace").AllNPC[quest_level].CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				end
-			end,print)
-			task.wait(0.01)
-		end
-	end)
-end,})
-
-section.input("Toggle",{Title = "Auto Accept Quest (Select)",default = true,callback = function(value)
-	auto_accept_quest_select = value
-end,})
-
-local get_mobs = require(game:GetService("ReplicatedStorage").Chest.Modules.QuestManager)
-local resultTable = {}
-local encounteredNames = {}
-
-for i, v in pairs(get_mobs) do
-	for i, v in pairs(v) do
-		if i == "Mob" then
-			local mob = tonumber(string.match(v, "%[Lv%. (%d+)%]"))
-			if check_sea() == 1 then
-				if mob and mob <= 2200 and not encounteredNames[v] then
-					table.insert(resultTable, {v = v, mob = mob})
-					table.insert(encounteredNames,v)
-					encounteredNames[v] = true
-				end
-			elseif check_sea() == 2 then
-				if mob and (mob > 2200 and mob <= 3975) and not encounteredNames[v] then
-					table.insert(resultTable, {v = v, mob = mob})
-					table.insert(encounteredNames,v)
-					encounteredNames[v] = true
-				end
-			end
-		end
-	end
-end
-
-table.sort(resultTable, function(a, b) return a.mob < b.mob end)
-local mob_table = {}
-for _, data in ipairs(resultTable) do
-	table.insert(mob_table,data.v)
-end
-
-section.input("Dropdown",{Title = "Select Mobs",item = mob_table,multi = false,callback = function(value)
-	select_mobs = value
-end,})
-
-section.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Daily Quest</font>'})
-
-section.input("Toggle",{Title = "Auto Daily Quest",default = false,callback = function(value)
-	auto_daily_quest = value
-end,})
-
-section2.input("Label",{Title = '<font color="rgb(170, 170, 127)">Configs</font>'})
-
-local checkweapon = function()
-	check_weapon = {}
-	for index,value in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-		if (string.find(value.ToolTip,"Sword") or string.find(value.ToolTip,"Combat") or string.find(value.ToolTip,"Fruit Power")) then
-			table.insert(check_weapon,value.Name)
-		end
-	end
-	return check_weapon
-end
-
-local select_weapon_drop = section2.input("Dropdown",{Title = "Select Weapon",item = checkweapon(),callback = function(value)
-	select_weapon = value
-end,})
-
-section2.input("Button",{Title = "Refresh Weapon",callback = function()
-	select_weapon_drop.Clear()
-	for index,value in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-		if (string.find(value.ToolTip,"Sword") or string.find(value.ToolTip,"Combat") or string.find(value.ToolTip,"Fruit Power")) then
-			select_weapon_drop.Add(value.Name)
-		end
-	end
-end,})
-
-section2.input("Dropdown",{Title = "Select Method",item = {"Above","Behind","Below"},multi = false,default = "Above",callback = function(value)
-	select_method_farm = value
-end,})
-
-distance_farming = 5
-section2.input("Slider",{Title = "Distance",Min = 5,Max = 7,Default = distance_farming,Type = "(stud.)",Dec = true,callback = function(value)
-	distance_farming = value
-end,})
-
-section4.input("Label",{Title = '<font color="rgb(170, 170, 127)">Misc</font>'})
-
-section2.input("Toggle",{Title = "Auto Skill",default = true,callback = function(value)
-	auto_skill = value
-end,})
-
-task.spawn(function()
-	do
-		if game:GetService("Workspace"):FindFirstChild("L_0") then
-			game:GetService("Workspace"):FindFirstChild("L_0"):Destroy()
-		end
-		
-		Part = Instance.new("Part",game:GetService("Workspace"))
-		Part.Name = "L_0";Part.Anchored = true;Part.Size = Vector3.new(0.1,0.05,0.1);Part.Transparency = 1;Part.CanCollide = true;
-	end
+page1:Button1("Button2", function(value)
+    print(value)
+end)
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+local getdrop = page1:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)
 end)
 
-section4.input("Toggle",{Title = "Walk On Water",default = false,callback = function(value)
-	walk_on_water = value
-	task.spawn(function()
-		while walk_on_water do
-			xpcall(function()
-				if game:GetService("Workspace"):FindFirstChild("L_0") then
-					Part.Position = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.x,-3.3,game.Players.LocalPlayer.Character.HumanoidRootPart.Position.z);
-				else
-					if game:GetService("Workspace"):FindFirstChild("L_0") then
-						game:GetService("Workspace"):FindFirstChild("L_0"):Destroy()
-					end
-					Part = Instance.new("Part",game:GetService("Workspace"))
-					Part.Name = "L_0";Part.Anchored = true;Part.Size = Vector3.new(0.1,0.05,0.1);Part.Transparency = 1;Part.CanCollide = true;
-				end
-			end,function() end)
-			task.wait(0.01)
-		end
-	end)
-end,})
+local getlable = page1:Label("Text Label")
 
-section4.input("Toggle",{Title = "Delete Effects",default = false,callback = function(value)
-	delete_effects = value
-	task.spawn(function()
-		while delete_effects do
-			xpcall(function()
-				for i,v in pairs(workspace.Effects:GetChildren()) do
-					v:Destroy()
-				end
-			end,function() end)
-			task.wait(0.01)
-		end
-	end)
-end,})
-
-section4.input("Button",{Title = "Redeem All Codes",callback = function()
-	local Url = "https://tryhardguides.com/king-legacy-codes/"
-	local Response = game:HttpGet(Url)
-	local Codes = {}
-
-	for ul in string.gmatch(Response, "<ul>(.-)</ul>") do
-		for li in string.gmatch(ul, "<li>(.-)</li>") do
-			for Code in string.gmatch(li, "<strong>([^<]+)</strong>") do
-				table.insert(Codes, Code)
-			end
-		end
-	end
-
-	for _, Code in ipairs(Codes) do
-		local a = Code:gsub(" ","")
-		game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.Setting_Frame.CodeBox.Text = a
-		task.wait(0.25)
-		local button = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.Setting_Frame.CodeUseButton
-		getconnect(button.MouseButton1Click)
-		task.wait(1)
-	end
-end,})
-
-section5.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Stats</font>'})
-
-section5.input("Toggle",{Title = "Auto Stats",default = false,callback = function(value)
-	auto_stats = value
-end,})
-
-section5.input("Dropdown",{Title = "Select Stats",item = {"Melee","Health","Sword","Fruit"},multi = true,callback = function(value)
-	select_stats = value
-end,})
-
-task.spawn(function()
-	while task.wait() do
-		xpcall(function()
-			if auto_stats then
-				if table.find(select_stats,"Melee") then
-					game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer("Melee",1)
-				end
-				if table.find(select_stats,"Health") then
-					game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer("Defense",1)
-				end
-				if table.find(select_stats,"Sword") then
-					game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer("Sword",1)
-				end
-				if table.find(select_stats,"Fruit") then
-					game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer("Fruit",1)
-				end
-			end
-		end,function() end)
-	end
+local getslider = page1:Slder("Slider",1,100,8, function(value)
+    print(value)
 end)
 
-section3.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Fighting Style</font>'})
+page4:Ti("Title")
 
-task.spawn(function()
-	if check_sea() == 1 then
-		section3.input("Toggle",{Title = "Auto Dark Leg",default = false,callback = function(value)
-			auto_darkleg = value
-			if not auto_darkleg then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_darkleg do
-					xpcall(function()
-						if not check_fighting("DarkLeg") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 150000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("DarkLegShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Dark Leg",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-
-		section3.input("Toggle",{Title = "Auto Cyborg",default = false,callback = function(value)
-			auto_cyborg = value
-			if not auto_cyborg then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_cyborg do
-					xpcall(function()
-						if not check_fighting("Cyborg") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 1000000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("CyborgShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Cyborg",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-
-		section3.input("Toggle",{Title = "Auto Dragon Claw",default = false,callback = function(value)
-			auto_dragon_claw = value
-			if not auto_dragon_claw then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_dragon_claw do
-					xpcall(function()
-						if not check_fighting("DragonClaw") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 1250000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("DragonClawShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Dragon Claw",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-
-		section3.input("Toggle",{Title = "Auto Fishman Karate",default = false,callback = function(value)
-			auto_fishman_karate = value
-			if not auto_fishman_karate then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_fishman_karate do
-					xpcall(function()
-						if not check_fighting("WaterStyle") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 1500000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("WaterStyleShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Fishman Karate",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-	end
+page4:Toggle("Toggle1",nil, function(value)
+    print(value)
+end)
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+page4:Button("Button1", function(value)
+    print(value)
 end)
 
-section6.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Training Skill</font>'})
-
-task.spawn(function()
-	if check_sea() == 1 then
-		section6.input("Toggle",{Title = "Auto Buy Buso Haki",default = false,callback = function(value)
-			auto_buso_haki = value
-			if not auto_buso_haki then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_buso_haki do
-					xpcall(function()
-						if not check_train_skill("Buso") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 500000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("BusoShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Buso Haki",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section6.input("Toggle",{Title = "Auto Buy Soru",default = false,callback = function(value)
-			auto_soru = value
-			if not auto_soru then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_soru do
-					xpcall(function()
-						if not check_train_skill("Soru") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 50000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("SoruShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Soru",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section6.input("Toggle",{Title = "Auto Buy Ken Haki",default = false,callback = function(value)
-			auto_ken_haki = value
-			if not auto_ken_haki then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_ken_haki do
-					xpcall(function()
-						if not check_train_skill("Ken") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 1500000 then
-								getquest(game:GetService("Workspace").AllNPC:FindFirstChild("KenShop").Name,true)
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Ken Haki",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-	end
+page4:Button1("Button2", function(value)
+    print(value)
 end)
 
-section7.input("Label",{Title = '<font color="rgb(170, 170, 127)">Devil Fruits</font>'})
-
-section7.input("Toggle",{Title = "Teleport Devil Fruits",default = false,callback = function(value)
-	get_devil_fruits = value
-	if not get_devil_fruits then
-		getnoclip(false,{Method = "Gyro"})
-	end
-	task.spawn(function()
-		while get_devil_fruits do
-			xpcall(function()
-				if table.find(select_fruits,"All") then
-					for i,v in pairs(workspace.AllDroppedFruit:GetChildren()) do
-						if v:GetAttribute("LegacyFruit") then
-							getnoclip(true,{Method = "Gyro"})
-							tp(true,{Method = "tp",GetCFrame = v:GetPivot()})
-						end
-					end
-				else
-					for i,v in pairs(workspace.AllDroppedFruit:GetChildren()) do
-						if v:GetAttribute("LegacyFruit") then
-							if table.find(select_fruits,v.Name) then
-								getnoclip(true,{Method = "Gyro"})
-								tp(true,{Method = "tp",GetCFrame = v:GetPivot()})
-							end
-						end
-					end
-				end
-			end,function() end)
-			task.wait(0.1)
-		end
-	end)
-end,})
-
-task.spawn(function()
-	local fruit_table = {"All"}
-	local get_fruits = require(game:GetService("ReplicatedStorage").Chest.Modules.FruitList)
-	for i,v in pairs(get_fruits) do
-		table.insert(fruit_table,i)
-	end
-	section7.input("Dropdown",{Title = "Select Devil Fruits",item = fruit_table,multi = true,callback = function(value)
-		select_fruits = value
-	end,})
+local getdrop = page4:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)
 end)
 
-section8.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Sword</font>'})
+local getlable = page4:Label("Text Label")
 
-task.spawn(function()
-	if check_sea() == 1 then
-		
-		section8.input("Toggle",{Title = "Auto Mom Blade",default = false,callback = function(value)
-			auto_mom_blade = value
-			if not auto_mom_blade then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_mom_blade do
-					xpcall(function()
-						if not check_sword("Mom Blade") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Monster [Lv. 2500]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.SummonOrcLord.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_mom_blade or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									if check_material("Twilight's Orb") then
-										getquest(workspace.AllNPC.SummonOrcLord.Name,true)
-									else
-										for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-											if value.Name == "Shadow Master [Lv. 1600]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-												repeat task.wait()
-													getnoclip(true,{Method = "Gyro"})
-													if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-														tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1600.CFrame * CFrame.new(0,0,-2)})
-													else
-														method_farm(select_method_farm,value)
-													end
-												until not auto_mom_blade or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-												getnoclip(false,{Method = "Gyro"})
-											else
-												tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1600.CFrame * CFrame.new(0,0,-2)})
-											end
-										end
-									end
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Mom Blade",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Saber",default = false,callback = function(value)
-			auto_saber = value
-			if not auto_saber then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_saber do
-					xpcall(function()
-						if not check_sword("Saber") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Expert Swordman [Lv. 3000]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp",GetCFrame = CFrame.new(5505.99707, 75.2738724, -6840.36621, -0.77981317, 1.01882947e-07, 0.626012325, 7.35837489e-08, 1, -7.10870438e-08, -0.626012325, -9.37027789e-09, -0.77981317)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_saber or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									tp(true,{Method = "tp",GetCFrame = CFrame.new(5505.99707, 75.2738724, -6840.36621, -0.77981317, 1.01882947e-07, 0.626012325, 7.35837489e-08, 1, -7.10870438e-08, -0.626012325, -9.37027789e-09, -0.77981317)})
-								else
-									tp(true,{Method = "tp",GetCFrame = CFrame.new(5505.99707, 75.2738724, -6840.36621, -0.77981317, 1.01882947e-07, 0.626012325, 7.35837489e-08, 1, -7.10870438e-08, -0.626012325, -9.37027789e-09, -0.77981317)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Saber",Type = 1})
-						end
-					end,print)
-					task.wait(0.01)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Jitter",default = false,callback = function(value)
-			auto_jitter = value
-			if not auto_jitter then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_jitter do
-					xpcall(function()
-						if not check_sword("Jitter") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Smoky [Lv. 20]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl20.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_jitter or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl20.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Jitter",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Tashi Blade",default = false,callback = function(value)
-			auto_tachi_blade = value
-			if not auto_tachi_blade then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_tachi_blade do
-					xpcall(function()
-						if not check_sword("Tashi Blade") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Tashi [Lv. 30]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl30.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_tachi_blade or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl30.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Tashi Blade",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Shark Blade",default = false,callback = function(value)
-			auto_shark_blade = value
-			if not auto_shark_blade then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_shark_blade do
-					xpcall(function()
-						if not check_sword("Shark Blade") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Shark Man [Lv. 230]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl230.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_shark_blade or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl230.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Shark Blade",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Pole",default = false,callback = function(value)
-			auto_pole = value
-			if not auto_pole then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_pole do
-					xpcall(function()
-						if not check_sword("Pole") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Rumble Man [Lv. 900]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl900.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_pole or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl900.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Pole",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Bisento",default = false,callback = function(value)
-			auto_bisento = value
-			if not auto_bisento then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_bisento do
-					xpcall(function()
-						if not check_sword("Bisento") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Quake Woman [Lv. 1925]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1925.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_bisento or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1925.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Bisento",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Buy Katana",default = false,callback = function(value)
-			auto_katana = value
-			if not auto_katana then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_katana do
-					xpcall(function()
-						if not check_sword("Katana") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 5000 then
-								for index,value in pairs(workspace.AllNPC:GetChildren()) do
-									if value.Name == "SwordShop" then
-										for i,v in pairs(value:GetChildren()) do
-											if v.Name == "Setting" then
-												if v:FindFirstChild("NameWeapon").Value == "Katana" then
-													getquest(value,true)
-												end
-											end
-										end
-									end
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Katana",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Buy Pipe",default = false,callback = function(value)
-			auto_pipe = value
-			if not auto_pipe then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_pipe do
-					xpcall(function()
-						if not check_sword("Pipe") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 500000 then
-								for index,value in pairs(workspace.AllNPC:GetChildren()) do
-									if value.Name == "SwordShop" then
-										for i,v in pairs(value:GetChildren()) do
-											if v.Name == "Setting" then
-												if v:FindFirstChild("NameWeapon").Value == "Pipe" then
-													getquest(value,true)
-												end
-											end
-										end
-									end
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Pipe",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Buy Triple Katana",default = false,callback = function(value)
-			auto_triple_katana = value
-			if not auto_triple_katana then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_triple_katana do
-					xpcall(function()
-						if not check_sword("Triple Katana") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 2500000 then
-								for index,value in pairs(workspace.AllNPC:GetChildren()) do
-									if value.Name == "SwordShop" then
-										for i,v in pairs(value:GetChildren()) do
-											if v.Name == "Setting" then
-												if v:FindFirstChild("NameWeapon").Value == "Triple Katana" then
-													getquest(value,true)
-												end
-											end
-										end
-									end
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Triple Katana",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Buy Mini Mace",default = false,callback = function(value)
-			auto_mini_mace = value
-			if not auto_mini_mace then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_mini_mace do
-					xpcall(function()
-						if not check_sword("Mini Mace") then
-							if game:GetService("Players").LocalPlayer.PlayerStats.beli.Value >= 3000000 then
-								for index,value in pairs(workspace.AllNPC:GetChildren()) do
-									if value.Name == "SwordShop" then
-										for i,v in pairs(value:GetChildren()) do
-											if v.Name == "Setting" then
-												if v:FindFirstChild("NameWeapon").Value == "Mini Mace" then
-													getquest(value,true)
-												end
-											end
-										end
-									end
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Mini Mace",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-			end,})
-	elseif check_sea() == 2 then
-		
-		section8.input("Toggle",{Title = "Auto Adventure Knife",default = false,callback = function(value)
-			auto_adventure_knife = value
-			if not auto_adventure_knife then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_adventure_knife do
-					xpcall(function()
-						if not check_sword("Adventure Knife") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Flame User [Lv. 3200]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3200.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_adventure_knife or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3200.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Adventure Knife",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Anubis Axe",default = false,callback = function(value)
-			auto_anubis_axe = value
-			if not auto_anubis_axe then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_anubis_axe do
-					xpcall(function()
-						if not check_sword("Anubis Axe") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "Anubis [Lv. 3150]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3125.CFrame * CFrame.new(0,0,-2)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_anubis_axe or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3125.CFrame * CFrame.new(0,0,-2)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Anubis Axe",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-		section8.input("Toggle",{Title = "Auto Muramasa",default = false,callback = function(value)
-			auto_muramasa = value
-			if not auto_muramasa then
-				getnoclip(false,{Method = "Gyro"})
-			end
-			task.spawn(function()
-				while auto_muramasa do
-					xpcall(function()
-						if not check_sword("Muramasa") then
-							for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-								if value.Name == "King Samurai [Lv. 3500]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-									repeat task.wait()
-										getnoclip(true,{Method = "Gyro"})
-										if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-											tp(true,{Method = "tp", GetCFrame = CFrame.new(-5906.22265625, 354.84906005859375, 83.59222412109375)})
-										else
-											method_farm(select_method_farm,value)
-										end
-									until not auto_muramasa or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-									getnoclip(false,{Method = "Gyro"})
-								else
-									tp(true,{Method = "tp", GetCFrame = CFrame.new(-5906.22265625, 354.84906005859375, 83.59222412109375)})
-								end
-							end
-						else
-							luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Muramasa",Type = 1})
-						end
-					end,function() end)
-					task.wait(0.1)
-				end
-			end)
-		end,})
-		
-			section8.input("Toggle",{Title = "Auto Authentic Mace",default = false,callback = function(value)
-				auto_authentic_mace = value
-				if not auto_authentic_mace then
-					getnoclip(false,{Method = "Gyro"})
-				end
-				task.spawn(function()
-					while auto_authentic_mace do
-						xpcall(function()
-							if not check_sword("Authentic Mace") then
-								for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-									if value.Name == "Dragon [Lv. 5000]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-										repeat task.wait()
-											getnoclip(true,{Method = "Gyro"})
-											if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-												tp(true,{Method = "tp", GetCFrame = CFrame.new(-5856.2119140625, 401.3624267578125, 7652.97705078125)})
-											else
-												method_farm(select_method_farm,value)
-											end
-									until not auto_authentic_mace or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-										getnoclip(false,{Method = "Gyro"})
-									else
-										if check_material("Dragon's Orb") then
-											getquest(workspace.AllNPC.SummonDragon.Name,true)
-										else
-											for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-												if value.Name == "Elite Skeleton [Lv. 3100]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-													repeat task.wait()
-														getnoclip(true,{Method = "Gyro"})
-														if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-															tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3075.CFrame * CFrame.new(0,0,-2)})
-														else
-															method_farm(select_method_farm,value)
-														end
-												until not auto_authentic_mace or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-													getnoclip(false,{Method = "Gyro"})
-												else
-													tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3075.CFrame * CFrame.new(0,0,-2)})
-												end
-											end
-										end
-									end
-								end
-							else
-								luxurylibrary.notification({Title = "Notification",Desc = "You Already Have Authentic Mace",Type = 1})
-							end
-						end,function() end)
-						task.wait(0.1)
-					end
-				end)
-			end,})
-	end
+local getslider = page4:Slder("Slider",1,100,8, function(value)
+    print(value)
+end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+page2:Ti("Title")
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+page2:Toggle("Toggle1",nil, function(value)
+    print(value)
 end)
 
-section9.input("Label",{Title = '<font color="rgb(170, 170, 127)">Teleports Island</font>'})
+page2:Button("Button1", function(value)
+    print(value)
+end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
 
-task.spawn(function()
-	
-	local get_island = {}
-	for i,v in pairs(workspace.Island:GetChildren()) do
-		if v:IsA("Model") then
-			table.insert(get_island,v.Name)
-		end
-	end
-	
-	section9.input("Dropdown",{Title = "Select Place",item = get_island,callback = function(value)
-		select_island = value
-		for i,v in pairs(workspace.Island:GetChildren()) do
-			if v:IsA("Model") then
-				if v.Name == select_island then
-					tp(true,{Method = "tp",GetCFrame = v:GetPivot()})
-				end
-			end
-		end
-	end,})
+page2:Button1("Button2", function(value)
+    print(value)
 end)
 
-section9.input("Label",{Title = '<font color="rgb(170, 170, 127)">Teleports Sea</font>'})
-
-task.spawn(function()
-	local sea_name,sea_req
-	if check_sea() == 1 then
-		sea_name = "Second Sea"
-		sea_req = 1
-	elseif check_sea() == 2 then
-		sea_name = "First Sea"
-		sea_req = 2 
-	end
-	section9.input("Button",{Title = 'Teleport to '..sea_name,callback = function()
-		repeat task.wait()
-			getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-		until check_sea() ~= sea_req
-	end,})
+local getdrop = page2:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
 end)
 
-section10.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Event Chest</font>'})
+local getlable = page2:Label("Text Label")
 
-section10.input("Toggle",{Title = "Auto Event Chest",default = false,callback = function(value)
-	auto_event_chest = value
-	if not auto_event_chest then
-		getnoclip(false,{})
-	end
-	task.spawn(function()
-		while auto_event_chest do
-			xpcall(function()
+local getslider = page2:Slder("Slider",1,100,8, function(value)
+    print(value)
+end)
+page3:Ti("Title")
 
-			end,print)
-			task.wait(0.01)
-		end
-	end)
-end,})
-
-local get_material = require(game:GetService("ReplicatedStorage").Chest.Modules.MaterialList)
-local material_list = {}
-for i,v in pairs(get_material) do
-	if not string.find(i,"Key") then
-		table.insert(material_list,i)
-	end
-end
-
-section11.input("Label",{Title = '<font color="rgb(170, 170, 127)">Auto Material</font>'})
-
-local show_material_txt = section11.input("Label",{Title = '<font color="rgb(170, 170, 127)">Material</font>'..'<font color="rgb(160,160,160)"> [nil] : '..'</font>'.."nil"})
-
-task.spawn(function()
-	while task.wait() do
-		xpcall(function()
-			if select_material ~= (nil or "") then
-				show_material_txt.Update('<font color="rgb(170, 170, 127)">Material</font>'..'<font color="rgb(160,160,160)"> ['..select_material..'] : </font>'..check_count_material(select_material))
-			end
-		end,function() end)
-	end
+page3:Toggle("Toggle1",nil, function(value)
+    print(value)
+end)
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+page3:Button("Button1", function(value)
+    print(value)
 end)
 
-section11.input("Toggle",{Title = "Auto Material (Select)",default = false,callback = function(value)
-	auto_material_select = value
-	if not auto_material_select then
-		getnoclip(false,{})
-	end
-	task.spawn(function()
-		while auto_material_select do
-			xpcall(function()
-				if select_material == "Leather" then
-					for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-						if value.Name == "Clown Pirate [Lv. 10]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-							repeat task.wait()
-								getnoclip(true,{Method = "Gyro"})
-								if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-									tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl10.CFrame * CFrame.new(0,0,-2)})
-								else
-									method_farm(select_method_farm,value)
-								end
-							until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-							getnoclip(false,{Method = "Gyro"})
-						else
-							tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl10.CFrame * CFrame.new(0,0,-2)})
-						end
-					end
-				elseif select_material == "Log" then
-					if check_sea() == 1 then
-						for i,v in pairs(workspace.Island["A - Town"].Tree:GetChildren()) do
-							if v:IsA("Model") and v.Name == "Tree" and auto_material_select then
-								for i,v in pairs(v:GetChildren()) do
-									if v:IsA("Part") then
-										repeat task.wait() 
-											tp(true,{Method = "tp", GetCFrame = v:GetPivot()})
-											skill()
-											attack(select_weapon)
-										until not auto_material_select or v.Transparency >= 1 or select_material ~= "Log"
-									end
-								end
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl10.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Rusted Scrap" then
-					if check_sea() == 1 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Elite Soldier [Lv. 1000]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1000.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1000.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					elseif check_sea() == 2 then
-						getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-					end
-				elseif select_material == "Angellic's Feather" then
-					if check_sea() == 1 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Sky Soldier [Lv. 800]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl800.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl800.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					elseif check_sea() == 2 then
-						getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-					end
-				elseif select_material == "Carrot" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Powerful Beast Pirate [Lv. 2450]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl2450.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl2450.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Pile of Bones" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Skull Pirate [Lv. 3050]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3025.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3025.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Fresh Fish" then
-					if check_sea() == 2 then
-						getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-					elseif check_sea() == 1 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Fishman [Lv. 2000]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl2000.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl2000.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Bread Crumbs" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Chess Soldier [Lv. 3200]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3200.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3200.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Iron Ingot" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Fiore Pirate [Lv. 3650]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = CFrame.new(6079.41357421875, 71.79540252685547, -3085.912841796875)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = CFrame.new(6079.41357421875, 71.79540252685547, -3085.912841796875)})
-							end
-						end
-					end
-				elseif select_material == "Undead's Ooze" then
-					if check_sea() == 2 then
-						getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-					elseif check_sea() == 1 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-							if value.Name == "Zombie [Lv. 1500]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1600.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl1600.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Thief's rag" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-							if value.Name == "Desert Thief [Lv. 3125]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3100.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3100.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				elseif select_material == "Dragon Scale" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-							if value.Name == "Dragon [Lv. 5000]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = CFrame.new(-5856.2119140625, 401.3624267578125, 7652.97705078125)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								if check_material("Dragon's Orb") then
-									getquest(workspace.AllNPC.SummonDragon.Name,true)
-								else
-									tp(true,{Method = "tp", GetCFrame = CFrame.new(-5856.2119140625, 401.3624267578125, 7652.97705078125)})
-									luxurylibrary.notification({Title = "Notification",Desc = "You Don't Have Dragon's Orb",Type = 2})
-								end
-							end
-						end
-					end
-				elseif select_material == "Dragon's Orb" then
-					if check_sea() == 1 then
-						if check_sea_progress() == 2 then
-							getquest(workspace.AllNPC["Elite Pirate"].Name,true)
-						end
-					elseif check_sea() == 2 then
-						for index , value in pairs(game:GetService("Workspace").Monster.Boss:GetChildren()) do
-							if value.Name == "Elite Skeleton [Lv. 3100]" and value:FindFirstChild("Humanoid").Health > 1 and value:FindFirstChild("HumanoidRootPart") then
-								repeat task.wait()
-									getnoclip(true,{Method = "Gyro"})
-									if (value:FindFirstChild("HumanoidRootPart").Position - game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude > 500 then
-										tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3075.CFrame * CFrame.new(0,0,-2)})
-									else
-										method_farm(select_method_farm,value)
-									end
-								until not auto_material_select or value:FindFirstChild("Humanoid").Health <= 0 or not value:FindFirstChild("HumanoidRootPart")
-								getnoclip(false,{Method = "Gyro"})
-							else
-								tp(true,{Method = "tp", GetCFrame = workspace.AllNPC.QuestLvl3075.CFrame * CFrame.new(0,0,-2)})
-							end
-						end
-					end
-				end
-			end,print)
-			task.wait(0.01)
-		end
-	end)
-end,})
+page3:Button1("Button2", function(value)
+    print(value)
+end)
 
-section11.input("Dropdown",{Title = "Select Material",item = material_list,callback = function(value)
-	select_material = value
-end,})
+local getdrop = page3:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)
+end)
 
---loadstring(game:HttpGet("https://gist.githubusercontent.com/SixZensED/95d7223c8251794ddd50b64f0580cae9/raw/9f0971b615265f6caccad16339f023b188ce6db5/gistfile1.txt"))()
+local getlable = page3:Label("Text Label")
+
+local getslider = page3:Slder("Slider",1,100,8, function(value)
+    print(value)
+end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+page5:Ti("Title")
+
+page5:Toggle("Toggle1",nil, function(value)
+    print(value)
+end)
+
+page5:Button("Button1", function(value)
+    print(value)
+end)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+page5:Button1("Button2", function(value)
+    print(value)
+end)
+
+local getdrop = page5:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)
+end)
+
+local getlable = page5:Label("Text Label")
+
+local getslider = page5:Slder("Slider",1,100,8, function(value)
+    print(value)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+end)
+page6:Ti("Title")
+
+page6:Toggle("Toggle1",nil, function(value)
+    print(value)
+end)
+
+page6:Button("Button1", function(value)
+    print(value)
+end)
+--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+page6:Button1("Button2", function(value)
+    print(value)
+end)
+
+local getdrop = page6:DropDown("Name DropDown","Name",{"a","b","c"}, function(value)
+    print(value)
+end)
+
+local getlable = page6:Label("Text Label")--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+
+local getslider = page6:Slder("Slider",1,100,8, function(value)--by ดิส แจกทุกอย่างทีมี https://discord.gg/NvGY2vEkV2
+    print(value)
+end)
